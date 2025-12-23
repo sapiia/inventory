@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Business Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styl.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-chart-line"></i>
+            <h2>AnalyticsPro</h2>
+        </div>
+
+        <div class="nav-menu">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Orders</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-box"></i>
+                <span>Inventory</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Hello, John</h1>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">J</div>
+                    <div class="user-info">
+                        <h4>John Doe</h4>
+                        <p>Administrator</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <h2>Welcome back, John!</h2>
+                <p>Here's what's happening with your business today.</p>
+
+                <div class="welcome-stats">
+                    <div class="stat-item">
+                        <h3>$20k</h3>
+                        <p>Weekly Balance</p>
+                        <a href="#" class="view-link">View entire list →</a>
+                    </div>
+                    <div class="stat-item">
+                        <h3>750</h3>
+                        <p>Orders in Line</p>
+                        <a href="#" class="view-link">View entire list →</a>
+                    </div>
+                    <div class="stat-item">
+                        <h3>150</h3>
+                        <p>New Clients</p>
+                        <a href="#" class="view-link">View entire list →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Card -->
+            <div class="stat-card">
+                <div class="stat-icon orders">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>1,250</h3>
+                <p>Total Orders This Month</p>
+                <a href="#" class="view-link">View details →</a>
+            </div>
+
+            <!-- Clients Card -->
+            <div class="stat-card">
+                <div class="stat-icon clients">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h3>850</h3>
+                <p>New Clients This Month</p>
+                <a href="#" class="view-link">View details →</a>
+            </div>
+
+            <!-- Calendar Card -->
+            <div class="calendar-card">
+                <div class="calendar-header">
+                    <h3>Calendar</h3>
+                    <div class="calendar-nav">
+                        <button><i class="fas fa-chevron-left"></i></button>
+                        <span>Feb 2023</span>
+                        <button><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="calendar-weekdays">
+                    <div>S</div>
+                    <div>M</div>
+                    <div>T</div>
+                    <div>W</div>
+                    <div>T</div>
+                    <div>F</div>
+                    <div>S</div>
+                </div>
+
+                <div class="calendar-days">
+                    <!-- Week 1 -->
+                    <div class="day other-month">27</div>
+                    <div class="day other-month">28</div>
+                    <div class="day other-month">29</div>
+                    <div class="day other-month">30</div>
+                    <div class="day other-month">31</div>
+                    <div class="day">1</div>
+                    <div class="day">2</div>
+
+                    <!-- Week 2 -->
+                    <div class="day">3</div>
+                    <div class="day">4</div>
+                    <div class="day today">5</div>
+                    <div class="day">6</div>
+                    <div class="day">7</div>
+                    <div class="day">8</div>
+                    <div class="day">9</div>
+
+                    <!-- Week 3 -->
+                    <div class="day">10</div>
+                    <div class="day">11</div>
+                    <div class="day">12</div>
+                    <div class="day">13</div>
+                    <div class="day">14</div>
+                    <div class="day">15</div>
+                    <div class="day">16</div>
+
+                    <!-- Week 4 -->
+                    <div class="day">17</div>
+                    <div class="day">18</div>
+                    <div class="day">19</div>
+                    <div class="day">20</div>
+                    <div class="day">21</div>
+                    <div class="day">22</div>
+                    <div class="day">23</div>
+
+                    <!-- Week 5 -->
+                    <div class="day">24</div>
+                    <div class="day">25</div>
+                    <div class="day">26</div>
+                    <div class="day">27</div>
+                    <div class="day">28</div>
+                    <div class="day other-month">1</div>
+                    <div class="day other-month">2</div>
+                </div>
+            </div>
+
+            <!-- Activity Card -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <h3>Activity</h3>
+                    <a href="#" class="view-link">View all →</a>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-avatar">JD</div>
+                    <div class="activity-info">
+                        <h4>John Doe</h4>
+                        <p>johndoe@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-avatar">SA</div>
+                    <div class="activity-info">
+                        <h4>Sarah Anderson</h4>
+                        <p>sarah.a@company.com</p>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-avatar">MJ</div>
+                    <div class="activity-info">
+                        <h4>Michael Johnson</h4>
+                        <p>m.johnson@business.com</p>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-avatar">EC</div>
+                    <div class="activity-info">
+                        <h4>Emma Clark</h4>
+                        <p>emma.clark@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+            <!-- Sales Chart -->
+            <div class="sales-chart-card">
+                <div class="sales-header">
+                    <h3>Sales</h3>
+                    <a href="#" class="view-link">View report →</a>
+                </div>
+
+                <div class="chart-container">
+                    <div class="bar-chart">
+                        <div class="bar-group">
+                            <div class="bar mon"></div>
+                            <div class="day-label">Mon</div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar tue"></div>
+                            <div class="day-label">Tue</div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar wed"></div>
+                            <div class="day-label">Wed</div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar thu"></div>
+                            <div class="day-label">Thu</div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar fri"></div>
+                            <div class="day-label">Fri</div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar sat"></div>
+                            <div class="day-label">Sat</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sales-stats">
+                    <div class="sales-stat">
+                        <h4>350k</h4>
+                        <p>Total Sales</p>
+                    </div>
+                    <div class="sales-stat">
+                        <h4>50k</h4>
+                        <p>This Week</p>
+                    </div>
+                    <div class="sales-stat">
+                        <h4>12.5%</h4>
+                        <p>Growth</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Sales Chart -->
+            <div class="weekly-sales-card">
+                <div class="weekly-sales-header">
+                    <h3>Weekly Sales</h3>
+                    <a href="#" class="view-link">View details →</a>
+                </div>
+
+                <div class="product-item">
+                    <div class="product-info">
+                        <div class="product-icon tops">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <div class="product-details">
+                            <h4>Tops</h4>
+                            <p>Clothing Category</p>
+                        </div>
+                    </div>
+                    <div class="product-progress">
+                        <div class="progress-bar tops"></div>
+                    </div>
+                    <div class="product-percentage">85%</div>
+                </div>
+
+                <div class="product-item">
+                    <div class="product-info">
+                        <div class="product-icon animal">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="product-details">
+                            <h4>Animal Care Products</h4>
+                            <p>Pet Supplies</p>
+                        </div>
+                    </div>
+                    <div class="product-progress">
+                        <div class="progress-bar animal"></div>
+                    </div>
+                    <div class="product-percentage">60%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Details Table -->
+        <div class="customer-card">
+            <div class="customer-header">
+                <h3>Customer Details</h3>
+                <a href="#" class="view-link">View all customers →</a>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Invoice Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>R217058</td>
+                            <td>Jebeck</td>
+                            <td>13/01/2022</td>
+                            <td>$54,000</td>
+                            <td><span class="status shipped">Shipped</span></td>
+                        </tr>
+                        <tr>
+                            <td>R23308</td>
+                            <td>Adham</td>
+                            <td>13/01/2022</td>
+                            <td>$88,050</td>
+                            <td><span class="status delivered">Delivered</span></td>
+                        </tr>
+                        <tr>
+                            <td>R23765</td>
+                            <td>Melbourne</td>
+                            <td>13/01/2022</td>
+                            <td>$4,000</td>
+                            <td><span class="status pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>R24129</td>
+                            <td>Alex Johnson</td>
+                            <td>14/01/2022</td>
+                            <td>$12,500</td>
+                            <td><span class="status shipped">Shipped</span></td>
+                        </tr>
+                        <tr>
+                            <td>R24567</td>
+                            <td>Sarah Williams</td>
+                            <td>15/01/2022</td>
+                            <td>$7,800</td>
+                            <td><span class="status delivered">Delivered</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Settings Card -->
+        <div class="settings-card">
+            <div class="settings-header">
+                <h3>Settings</h3>
+                <p>Distribution of sales across platform</p>
+                <p class="text-muted">5th - 12th Jan</p>
+            </div>
+
+            <div class="settings-stats">
+                <div class="setting-stat">
+                    <div class="setting-info">
+                        <h4>Total Intake</h4>
+                        <p>All platform sales</p>
+                    </div>
+                    <div class="setting-value">$125,000</div>
+                </div>
+
+                <div class="setting-stat">
+                    <div class="setting-info">
+                        <h4>New Customers</h4>
+                        <p>First time buyers</p>
+                    </div>
+                    <div class="setting-value">850</div>
+                </div>
+
+                <div class="setting-stat">
+                    <div class="setting-info">
+                        <h4>Repeat Customers</h4>
+                        <p>Returning customers</p>
+                    </div>
+                    <div class="setting-value">1,250</div>
+                </div>
+
+                <div class="setting-stat">
+                    <div class="setting-info">
+                        <h4>Total Revenue</h4>
+                        <p>Net profit after expenses</p>
+                    </div>
+                    <div class="setting-value">$89,500</div>
+                </div>
+
+                <div class="setting-stat">
+                    <div class="setting-info">
+                        <h4>Online Visitors</h4>
+                        <p>Website traffic</p>
+                    </div>
+                    <div class="setting-value">15.2k</div>
+                </div>
+
+                <div class="setting-stat">
+                    <div class="setting-info">
+                        <h4>Offline Visitors</h4>
+                        <p>Physical store visits</p>
+                    </div>
+                    <div class="setting-value">8.5k</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>AnalyticsPro Dashboard &copy; 2023 | All rights reserved</p>
+        </div>
+    </div>
+
+
+    <script src="../assets/js/app.js"></script>
+</body>
+
+</html>

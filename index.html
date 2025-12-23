@@ -1,12 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .sidebar-active { @apply bg-purple-700 text-white; }
+  </style>
 </head>
-<body>
-    <h1>Hello inventory</h1>
-    <h2>Hi world</h2>
+<body class="bg-gray-100 font-sans">
+
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gradient-to-b from-purple-800 to-purple-900 text-white flex flex-col">
+      <div class="p-6 text-center border-b border-purple-700">
+        <h1 class="text-2xl font-bold">Inventory System</h1>
+      </div>
+      <nav class="flex-1 p-4">
+        <ul class="space-y-2">
+          <li><button id="nav-dashboard" class="w-full text-left py-3 px-4 rounded-lg sidebar-active flex items-center gap-3"><i class="fas fa-home"></i> Dashboard</button></li>
+          <li><button id="nav-items" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-boxes"></i> Items</button></li>
+          <li><button id="nav-transactions" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-exchange-alt"></i> Transactions</button></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-gradient-to-br from-purple-50 to-blue-50 p-8">
+      <!-- Dashboard Page -->
+      <div id="page-dashboard" class="space-y-8">
+        <h2 class="text-3xl font-bold text-purple-800">Dashboard</h2>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-600">
+            <p class="text-gray-600">Total Inventory Value</p>
+            <p class="text-3xl font-bold text-purple-800" id="total-value">$0.00</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-600">
+            <p class="text-gray-600">Total Items</p>
+            <p class="text-3xl font-bold text-blue-800" id="total-items">0</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-pink-600">
+            <p class="text-gray-600">Low Stock Items</p>
+            <p class="text-3xl font-bold text-pink-800" id="low-stock">0</p>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h3 class="text-xl font-semibold mb-4">Monthly Stock Movement</h3>
+            <canvas id="barChart"></canvas>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h3 class="text-xl font-semibold mb-4">Value by Category</h3>
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items Page -->
+      <div id="page-items" class="hidden space-y-8">
+        <div class="flex justify-between items-center">
+          <h2 class="text-3xl font-bold text-purple-800">Items Management</h2>
+          <button id="add-item-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg flex items-center gap-2"><i class="fas fa-plus"></i> Add Item</button>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-purple-100">
+              <tr>
+                <th class="px-6 py-4 text-left">ID</th>
+                <th class="px-6 py-4 text-left">Name</th>
+                <th class="px-6 py-4 text-left">Category</th>
+                <th class="px-6 py-4 text-left">Quantity</th>
+                <th class="px-6 py-4 text-left">Price</th>
+                <th class="px-6 py-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="items-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Transactions Page -->
+      <div id="page-transactions" class="hidden space-y-8">
+        <h2 class="text-3xl font-bold text-purple-800">Transaction History</h2>
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-purple-100">
+              <tr>
+                <th class="px-6 py-4 text-left">Date</th>
+                <th class="px-6 py-4 text-left">Item</th>
+                <th class="px-6 py-4 text-left">Type</th>
+                <th class="px-6 py-4 text-left">Quantity</th>
+              </tr>
+            </thead>
+            <tbody id="transactions-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal for Add/Edit Item -->
+  <div id="item-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+      <h3 id="modal-title" class="text-2xl font-bold mb-6">Add New Item</h3>
+      <form id="item-form">
+        <input type="hidden" id="edit-id">
+        <div class="space-y-4">
+          <input type="text" id="item-name" placeholder="Item Name" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-purple-600">
+          <input type="text" id="item-category" placeholder="Category" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-purple-600">
+          <input type="number" id="item-quantity" placeholder="Quantity" min="0" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-purple-600">
+          <input type="number" step="0.01" id="item-price" placeholder="Price per unit" min="0" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-purple-600">
+        </div>
+        <div class="flex justify-end gap-4 mt-8">
+          <button type="button" id="modal-cancel" class="px-6 py-3 border rounded-lg hover:bg-gray-100">Cancel</button>
+          <button type="submit" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Data storage
+    let items = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+    let transactions = JSON.parse(localStorage.getItem('inventoryTransactions')) || [];
+    let nextId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
+
+    // Charts
+    let barChart, pieChart;
+
+    // Navigation
+    document.getElementById('nav-dashboard').addEventListener('click', () => showPage('dashboard'));
+    document.getElementById('nav-items').addEventListener('click', () => showPage('items'));
+    document.getElementById('nav-transactions').addEventListener('click', () => showPage('transactions'));
+
+    function showPage(page) {
+      document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`page-${page}`).classList.remove('hidden');
+      
+      document.querySelectorAll('aside button').forEach(btn => btn.classList.remove('sidebar-active'));
+      document.getElementById(`nav-${page}`).classList.add('sidebar-active');
+
+      if (page === 'dashboard') updateDashboard();
+      if (page === 'items') renderItemsTable();
+      if (page === 'transactions') renderTransactionsTable();
+    }
+
+    // CRUD for Items
+    document.getElementById('add-item-btn').addEventListener('click', openAddModal);
+    function openAddModal() {
+      document.getElementById('modal-title').textContent = 'Add New Item';
+      document.getElementById('item-form').reset();
+      document.getElementById('edit-id').value = '';
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    document.getElementById('modal-cancel').addEventListener('click', () => {
+      document.getElementById('item-modal').classList.add('hidden');
+    });
+
+    document.getElementById('item-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-id').value || nextId++;
+      const name = document.getElementById('item-name').value;
+      const category = document.getElementById('item-category').value;
+      const quantity = parseInt(document.getElementById('item-quantity').value);
+      const price = parseFloat(document.getElementById('item-price').value);
+
+      if (id > items.length && items.some(i => i.id === id)) id = nextId++; // safety
+
+      const existingIndex = items.findIndex(i => i.id === parseInt(id));
+      if (existingIndex > -1) {
+        items[existingIndex] = {id: parseInt(id), name, category, quantity, price};
+      } else {
+        items.push({id, name, category, quantity, price});
+      }
+
+      saveData();
+      document.getElementById('item-modal').classList.add('hidden');
+      renderItemsTable();
+      updateDashboard();
+    });
+
+    function editItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      document.getElementById('modal-title').textContent = 'Edit Item';
+      document.getElementById('edit-id').value = item.id;
+      document.getElementById('item-name').value = item.name;
+      document.getElementById('item-category').value = item.category;
+      document.getElementById('item-quantity').value = item.quantity;
+      document.getElementById('item-price').value = item.price;
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    function deleteItem(id) {
+      if (!confirm('Delete this item?')) return;
+      items = items.filter(i => i.id !== id);
+      saveData();
+      renderItemsTable();
+      updateDashboard();
+    }
+
+    function addTransaction(itemId, type, qtyChange) {
+      const item = items.find(i => i.id === itemId);
+      if (!item) return;
+      const date = new Date().toLocaleDateString();
+      transactions.push({date, itemName: item.name, type: type === 'in' ? 'Stock In' : 'Stock Out', quantity: Math.abs(qtyChange)});
+      item.quantity += qtyChange;
+      saveData();
+    }
+
+    // Rendering
+    function renderItemsTable() {
+      const tbody = document.getElementById('items-table-body');
+      tbody.innerHTML = '';
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b hover:bg-purple-50';
+        tr.innerHTML = `
+          <td class="px-6 py-4">${item.id}</td>
+          <td class="px-6 py-4">${item.name}</td>
+          <td class="px-6 py-4">${item.category}</td>
+          <td class="px-6 py-4">${item.quantity}</td>
+          <td class="px-6 py-4">$${item.price.toFixed(2)}</td>
+          <td class="px-6 py-4">
+            <button onclick="editItem(${item.id})" class="text-blue-600 hover:underline mr-4">Edit</button>
+            <button onclick="deleteItem(${item.id})" class="text-red-600 hover:underline">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTransactionsTable() {
+      const tbody = document.getElementById('transactions-table-body');
+      tbody.innerHTML = '';
+      transactions.slice().reverse().forEach(t => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b hover:bg-purple-50';
+        tr.innerHTML = `
+          <td class="px-6 py-4">${t.date}</td>
+          <td class="px-6 py-4">${t.itemName}</td>
+          <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-sm ${t.type === 'Stock In' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${t.type}</span></td>
+          <td class="px-6 py-4">${t.quantity}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Dashboard Update
+    function updateDashboard() {
+      const totalValue = items.reduce((sum, i) => sum + i.quantity * i.price, 0);
+      const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
+      const lowStock = items.filter(i => i.quantity < 10).length;
+
+      document.getElementById('total-value').textContent = `$${totalValue.toFixed(2)}`;
+      document.getElementById('total-items').textContent = totalItems;
+      document.getElementById('low-stock').textContent = lowStock;
+
+      // Bar Chart - Monthly movement (simulated with last 6 months)
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+      const inflows = months.map(() => Math.floor(Math.random() * 500));
+      const outflows = months.map(() => Math.floor(Math.random() * 400));
+
+      if (barChart) barChart.destroy();
+      barChart = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [
+            { label: 'Stock In', data: inflows, backgroundColor: '#9333ea' },
+            { label: 'Stock Out', data: outflows, backgroundColor: '#ec4899' }
+          ]
+        },
+        options: { responsive: true, scales: { y: { beginAtZero: true } } }
+      });
+
+      // Pie Chart - Category value
+      const categoryData = {};
+      items.forEach(i => {
+        categoryData[i.category] = (categoryData[i.category] || 0) + i.quantity * i.price;
+      });
+      const labels = Object.keys(categoryData);
+      const data = Object.values(categoryData);
+
+      if (pieChart) pieChart.destroy();
+      pieChart = new Chart(document.getElementById('pieChart'), {
+        type: 'doughnut',
+        data: {
+          labels: labels.length ? labels : ['No Data'],
+          datasets: [{ data: data.length ? data : [1], backgroundColor: ['#9333ea', '#a855f7', '#c084fc', '#ddd6fe', '#f3e8ff'] }]
+        },
+        options: { responsive: true }
+      });
+    }
+
+    function saveData() {
+      localStorage.setItem('inventoryItems', JSON.stringify(items));
+      localStorage.setItem('inventoryTransactions', JSON.stringify(transactions));
+    }
+
+    // Initial load
+    showPage('dashboard');
+  </script>
 </body>
 </html>

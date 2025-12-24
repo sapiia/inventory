@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inventory System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Tailwind -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/css/items.css">
+</head>
+<body class="bg-gray-100">
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="sidebar p-6 text-white">
+    <h2 class="text-2xl font-bold mb-8">Inventory System</h2>
+
+    <ul class="space-y-3">
+      <li class="menu-item flex items-center mb-3"><i class="fas fa-home mr-2"></i>Dashboard</li>
+
+      <li id="items-btn" class="menu-item flex justify-between items-center cursor-pointer mb-3">
+        <span><i class="fas fa-box mr-2"></i>Items</span>
+        <i class="fas fa-chevron-down"></i>
+      </li>
+
+      <ul id="items-submenu" class="submenu ml-4 space-y-2 hidden">
+      </ul>
+
+      <li class="menu-item flex items-center mt-3"><i class="fas fa-exchange-alt mr-2"></i>Transactions</li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 p-10">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-purple-700">Items Management</h1>
+        <button id="add-item-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+          <i class="fas fa-plus"></i> Add Item
+        </button>
+      </div>
+
+      <!-- Items Grid -->
+      <div id="type-nav" class="flex gap-3 mb-6"></div>
+      <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div id="item-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="modal-box bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+    <div class="bg-gradient-to-r from-purple-600 to-purple-700 p-6 text-white">
+      <h2 id="modal-title" class="text-2xl font-bold">Add New Item</h2>
+    </div>
+    <form id="item-form" class="p-6 space-y-5">
+      <input type="hidden" id="edit-id">
+
+      <div class="space-y-2">
+        <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+        <input id="name" class="input w-full" placeholder="Enter product name" required>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="type" class="block text-sm font-medium text-gray-700">Product Type</label>
+          <select id="type" class="input w-full" required>
+            <option value="">Select Type</option>
+            <option value="Car">Car</option>
+            <option value="Moto">Moto</option>
+            <option value="Skincare">Skincare</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+          <input id="category" class="input w-full" placeholder="e.g., Sedan, Sport Bike, Cleanser" required>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="space-y-2">
+          <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+          <input id="quantity" type="number" min="0" class="input w-full" required>
+        </div>
+        <div class="space-y-2">
+          <label for="price" class="block text-sm font-medium text-gray-700">Price ($)</label>
+          <input id="price" type="number" min="0" step="0.01" class="input w-full" required>
+        </div>
+        <div class="space-y-2">
+          <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
+          <input id="model" class="input w-full" placeholder="Model/Year" required>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>
+        <input id="image" type="file" accept="image/*" class="input w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+        <div class="mt-2">
+          <img id="image-preview" class="max-w-full h-32 object-cover rounded-lg border-2 border-dashed border-gray-300 hidden">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-4 border-t">
+        <button type="button" id="cancel-btn" class="btn-cancel px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">Cancel</button>
+        <button type="submit" class="btn-save px-6 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-all">Save Item</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="/assets/js/items.js"></script>
+
+</body>
+</html>

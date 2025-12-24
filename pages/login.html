@@ -10,30 +10,171 @@
     <script src="../assets/js/ui.js"></script>
 </head>
 <body>
-    <div class="flex h-screen overflow-hidden">
-        <div class="flex-1 flex flex-col justify-center items-center bg-gray-100">
-            <div class="w-full max-w-md">
-                <div>
-                    <h1>Login</h1>
-                    <form id="lp-login-form">
-                        <input type="text" id="lp-username" placeholder="Username" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-purple-600">
-                        <input type="password" id="lp-password" placeholder="Password" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-purple-600">
-                        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg">Login</button>
-                        <div class="mt-4">
-                            <label for="lp-remember" class="flex items-center">
-                                <input type="checkbox" id="lp-remember" class="mr-2">
-                                <span>Remember me</span>
-                            </label>
-                            <p>Don't have an account? <a href="/register" class="text-purple-600 hover:underline">Register</a></p>
-                            <p>Forgot password? <a href="/forgot" class="text-purple-600 hover:underline">Reset</a></p>
-                            
-
-                        </div>
-                                
+    <div class="flex h-screen overflow-hidden items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50">
+        <div class="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+            <div class="hidden md:flex items-center justify-center">
+                <div class="text-center">
+                    <h1 class="text-4xl font-extrabold text-purple-800 mb-4">Inventory System</h1>
+                    <p class="text-gray-600">Manage your stock, transactions, and reports in one place.</p>
+                    <img src="../assets/images/login-illustration.svg" alt="" class="mt-6 w-80 mx-auto" onerror="this.style.display='none'">
                 </div>
             </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Welcome</h2>
+                    <div class="space-x-2">
+                        <button id="tab-login" class="px-4 py-2 rounded-lg bg-purple-600 text-white">Login</button>
+                        <button id="tab-register" class="px-4 py-2 rounded-lg border border-gray-200">Register</button>
+                    </div>
+                </div>
+
+                <div id="messages" class="mb-4"></div>
+
+                <!-- Login form -->
+                <form id="login-form">
+                    <label class="block text-sm text-gray-600 mb-1">Name or Email</label>
+                    <input type="text" id="login-identifier" placeholder="Name or email" required class="w-full px-4 py-3 border rounded-lg mb-3 focus:outline-none focus:border-purple-600">
+
+                    <label class="block text-sm text-gray-600 mb-1">Password</label>
+                    <input type="password" id="login-password" placeholder="Password" required class="w-full px-4 py-3 border rounded-lg mb-3 focus:outline-none focus:border-purple-600">
+
+                    <div class="flex items-center justify-between mb-4">
+                        <label class="flex items-center text-sm text-gray-600">
+                            <input type="checkbox" id="login-remember" class="mr-2">
+                            Remember me
+                        </label>
+                        <button type="button" id="forgot-btn" class="text-sm text-purple-600 hover:underline">Forgot password?</button>
+                    </div>
+
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg">Sign in</button>
+                </form>
+
+                <!-- Register form -->
+                <form id="register-form" class="hidden">
+                    <label class="block text-sm text-gray-600 mb-1">Name</label>
+                    <input type="text" id="reg-name" placeholder="Full name" required class="w-full px-4 py-3 border rounded-lg mb-3 focus:outline-none focus:border-purple-600">
+
+                    <label class="block text-sm text-gray-600 mb-1">Password</label>
+                    <input type="password" id="reg-password" placeholder="Create a password" required class="w-full px-4 py-3 border rounded-lg mb-3 focus:outline-none focus:border-purple-600">
+
+                    <label class="block text-sm text-gray-600 mb-1">Phone number</label>
+                    <input type="tel" id="reg-phone" placeholder="Phone number" required class="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:border-purple-600">
+
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg">Create account</button>
+                </form>
+
+                <!-- Forgot password modal -->
+                <div id="forgot-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
+                        <h3 class="text-xl font-bold mb-4">Reset Password</h3>
+                        <p class="text-sm text-gray-600 mb-4">Enter your name and phone number to reset your password.</p>
+                        <form id="forgot-form">
+                            <input type="text" id="forgot-name" placeholder="Name" required class="w-full px-4 py-3 border rounded-lg mb-3 focus:outline-none focus:border-purple-600">
+                            <input type="tel" id="forgot-phone" placeholder="Phone number" required class="w-full px-4 py-3 border rounded-lg mb-3 focus:outline-none focus:border-purple-600">
+                            <input type="password" id="forgot-newpass" placeholder="New password" required class="w-full px-4 py-3 border rounded-lg mb-3 focus:outline-none focus:border-purple-600">
+                            <div class="flex justify-end gap-3 mt-4">
+                                <button type="button" id="forgot-cancel" class="px-4 py-2 border rounded-lg">Cancel</button>
+                                <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
+        </div>
     
+        <script>
+        // Helper: show messages
+        function showMessage(text, type='info'){
+            const el = document.getElementById('messages');
+            if(!el) return;
+            el.innerHTML = `<div class=\"p-3 rounded-lg text-sm ${type==='error'?'bg-red-100 text-red-700':'bg-green-50 text-green-700'}\">${text}</div>`;
+            setTimeout(()=>{ if(document.getElementById('messages')) document.getElementById('messages').innerHTML = '' }, 4000);
+        }
+
+        // Users storage
+        function loadUsers(){
+            try{ return JSON.parse(localStorage.getItem('inventory_users')) || []; }catch(e){return []}
+        }
+        function saveUsers(users){ localStorage.setItem('inventory_users', JSON.stringify(users)); }
+
+        // Tabs
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        tabLogin.addEventListener('click', ()=>{ loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); tabLogin.classList.add('bg-purple-600','text-white'); tabRegister.classList.remove('bg-purple-600','text-white'); });
+        tabRegister.addEventListener('click', ()=>{ loginForm.classList.add('hidden'); registerForm.classList.remove('hidden'); tabRegister.classList.add('bg-purple-600','text-white'); tabLogin.classList.remove('bg-purple-600','text-white'); });
+
+        // Register
+        registerForm.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const phone = document.getElementById('reg-phone').value.trim();
+            if(!name || !password || !phone){ showMessage('Please complete all fields', 'error'); return; }
+            const users = loadUsers();
+            if(users.find(u=>u.name.toLowerCase() === name.toLowerCase())){ showMessage('Name already registered', 'error'); return; }
+            users.push({name, password, phone, created: Date.now()});
+            saveUsers(users);
+            showMessage('Account created — you can now sign in');
+            registerForm.reset();
+            tabLogin.click();
+        });
+
+        // Login
+        loginForm.addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            const identifier = document.getElementById('login-identifier').value.trim();
+            const password = document.getElementById('login-password').value;
+            const remember = document.getElementById('login-remember').checked;
+            if(!identifier || !password){ showMessage('Provide name/email and password', 'error'); return; }
+
+            const users = loadUsers();
+            const found = users.find(u => u.name.toLowerCase() === identifier.toLowerCase() || (u.email && u.email.toLowerCase() === identifier.toLowerCase()));
+            if(found){
+                if(found.password !== password){ showMessage('Invalid credentials', 'error'); return; }
+                // create session via existing auth helper
+                const res = await auth.login({username: found.name, password}, remember);
+                if(res && res.ok){ showMessage('Signed in — redirecting...'); setTimeout(()=> window.location.href = '../index.html', 700); }
+                else showMessage(res.message || 'Login failed', 'error');
+            } else {
+                // fallback to demo auth behaviour (accept any credentials)
+                const res = await auth.login({username: identifier, password}, remember);
+                if(res && res.ok){ showMessage('Signed in (demo) — redirecting...'); setTimeout(()=> window.location.href = '../index.html', 700); }
+                else showMessage(res.message || 'Login failed', 'error');
+            }
+        });
+
+        // Forgot password flow
+        const forgotBtn = document.getElementById('forgot-btn');
+        const forgotModal = document.getElementById('forgot-modal');
+        forgotBtn.addEventListener('click', ()=> forgotModal.classList.remove('hidden'));
+        document.getElementById('forgot-cancel').addEventListener('click', ()=> forgotModal.classList.add('hidden'));
+        document.getElementById('forgot-form').addEventListener('submit', (e)=>{
+            e.preventDefault();
+            const name = document.getElementById('forgot-name').value.trim();
+            const phone = document.getElementById('forgot-phone').value.trim();
+            const newpass = document.getElementById('forgot-newpass').value;
+            const users = loadUsers();
+            const idx = users.findIndex(u => u.name.toLowerCase() === name.toLowerCase() && u.phone === phone);
+            if(idx === -1){ showMessage('No matching account found', 'error'); return; }
+            users[idx].password = newpass;
+            saveUsers(users);
+            showMessage('Password reset. You can sign in now.');
+            forgotModal.classList.add('hidden');
+            document.getElementById('forgot-form').reset();
+            tabLogin.click();
+        });
+
+        // If already authenticated, redirect to app
+        if(window.auth && auth.isAuthenticated && auth.isAuthenticated()){
+            window.location.href = '../index.html';
+        }
+        </script>
+
 </body>
 </html>

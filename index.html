@@ -421,19 +421,57 @@
       members.filter(m=> !q || (m.name && m.name.toLowerCase().includes(q)) || (m.email && m.email.toLowerCase().includes(q)) || (m.mobile && m.mobile.toLowerCase().includes(q))).forEach(m=>{
         const tr = document.createElement('tr');
         tr.className = 'border-b';
-        tr.innerHTML = `
-          <td class="px-4 py-3"><img src="${m.picture||'../assets/images/default-avatar.png'}" class="w-12 h-12 rounded-md object-cover" /></td>
-          <td class="px-4 py-3 font-medium">${m.name||''}</td>
-          <td class="px-4 py-3">${m.mobile||''}</td>
-          <td class="px-4 py-3">${m.email||''}</td>
-          <td class="px-4 py-3"><span class="px-3 py-1 rounded-full text-sm ${m.status==='Active'?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}">${m.status||'Active'}</span></td>
-          <td class="px-4 py-3">${m.status==='Active'?'<button class="px-3 py-1 bg-purple-600 text-white rounded-lg">Make admin</button>':'<span class="text-sm text-gray-500">-</span>'}</td>
-          <td class="px-4 py-3">
-            <button onclick="editMember('${m.id}')" class="text-blue-600 hover:underline mr-3">Edit</button>
-            <button onclick="deleteMember('${m.id}')" class="text-red-600 hover:underline mr-3">Delete</button>
-            <button onclick="loginAsMember('${m.id}')" class="px-3 py-1 bg-gray-100 rounded-lg">Login</button>
-          </td>
-        `;
+
+        // Photo
+        const tdPhoto = document.createElement('td'); tdPhoto.className = 'px-4 py-3';
+        const img = document.createElement('img'); img.src = m.picture || '../assets/images/default-avatar.png'; img.className = 'w-12 h-12 rounded-md object-cover'; tdPhoto.appendChild(img);
+
+        // Name
+        const tdName = document.createElement('td'); tdName.className = 'px-4 py-3 font-medium'; tdName.textContent = m.name || '';
+
+        // Mobile
+        const tdMobile = document.createElement('td'); tdMobile.className = 'px-4 py-3'; tdMobile.textContent = m.mobile || '';
+
+        // Email
+        const tdEmail = document.createElement('td'); tdEmail.className = 'px-4 py-3'; tdEmail.textContent = m.email || '';
+
+        // Status
+        const tdStatus = document.createElement('td'); tdStatus.className = 'px-4 py-3';
+        const spanStatus = document.createElement('span'); spanStatus.className = `px-3 py-1 rounded-full text-sm ${m.status==='Active'?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}`; spanStatus.textContent = m.status || 'Active'; tdStatus.appendChild(spanStatus);
+
+        // Operation (Make admin placeholder)
+        const tdOp = document.createElement('td'); tdOp.className = 'px-4 py-3';
+        if(m.status === 'Active'){
+          const btnOp = document.createElement('button'); btnOp.className = 'px-3 py-1 bg-purple-600 text-white rounded-lg text-sm'; btnOp.textContent = 'Make admin';
+          tdOp.appendChild(btnOp);
+        } else {
+          tdOp.textContent = '-';
+        }
+
+        // Actions (icons)
+        const tdAction = document.createElement('td'); tdAction.className = 'px-4 py-3 flex items-center gap-2';
+
+        const btnEdit = document.createElement('button'); btnEdit.title = 'Edit'; btnEdit.className = 'p-2 rounded-md hover:bg-gray-100'; btnEdit.innerHTML = '<i class="fas fa-pen text-blue-600"></i>';
+        btnEdit.addEventListener('click', ()=> editMember(m.id));
+
+        const btnDelete = document.createElement('button'); btnDelete.title = 'Delete'; btnDelete.className = 'p-2 rounded-md hover:bg-gray-100'; btnDelete.innerHTML = '<i class="fas fa-trash text-red-600"></i>';
+        btnDelete.addEventListener('click', ()=> deleteMember(m.id));
+
+        const btnLogin = document.createElement('button'); btnLogin.title = 'Login'; btnLogin.className = 'p-2 rounded-md bg-gray-100'; btnLogin.innerHTML = '<i class="fas fa-sign-in-alt text-gray-700"></i>';
+        btnLogin.addEventListener('click', ()=> loginAsMember(m.id));
+
+        tdAction.appendChild(btnEdit);
+        tdAction.appendChild(btnDelete);
+        tdAction.appendChild(btnLogin);
+
+        tr.appendChild(tdPhoto);
+        tr.appendChild(tdName);
+        tr.appendChild(tdMobile);
+        tr.appendChild(tdEmail);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdOp);
+        tr.appendChild(tdAction);
+
         tbody.appendChild(tr);
       });
     }

@@ -88,23 +88,7 @@
         </div>
       </div>
 
-      <!-- Transactions Page -->
-      <div id="page-transactions" class="hidden space-y-8">
-        <h2 class="text-3xl font-bold text-purple-800">Transaction History</h2>
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <table class="w-full">
-            <thead class="bg-purple-100">
-              <tr>
-                <th class="px-6 py-4 text-left">Date</th>
-                <th class="px-6 py-4 text-left">Item</th>
-                <th class="px-6 py-4 text-left">Type</th>
-                <th class="px-6 py-4 text-left">Quantity</th>
-              </tr>
-            </thead>
-            <tbody id="transactions-table-body"></tbody>
-          </table>
-        </div>
-      </div>
+
     </main>
   </div>
 
@@ -131,7 +115,6 @@
   <script>
     // Data storage
     let items = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-    let transactions = JSON.parse(localStorage.getItem('inventoryTransactions')) || [];
     let nextId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
 
     // Charts
@@ -140,18 +123,19 @@
     // Navigation
     document.getElementById('nav-dashboard').addEventListener('click', () => showPage('dashboard'));
     document.getElementById('nav-items').addEventListener('click', () => showPage('items'));
-    document.getElementById('nav-transactions').addEventListener('click', () => showPage('transactions'));
+    document.getElementById('nav-transactions').addEventListener('click', () => {
+      window.location.href = 'pages/transection.html';
+    });
 
     function showPage(page) {
       document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
       document.getElementById(`page-${page}`).classList.remove('hidden');
-      
+
       document.querySelectorAll('aside button').forEach(btn => btn.classList.remove('sidebar-active'));
       document.getElementById(`nav-${page}`).classList.add('sidebar-active');
 
       if (page === 'dashboard') updateDashboard();
       if (page === 'items') renderItemsTable();
-      if (page === 'transactions') renderTransactionsTable();
     }
 
     // CRUD for Items
@@ -210,15 +194,6 @@
       updateDashboard();
     }
 
-    function addTransaction(itemId, type, qtyChange) {
-      const item = items.find(i => i.id === itemId);
-      if (!item) return;
-      const date = new Date().toLocaleDateString();
-      transactions.push({date, itemName: item.name, type: type === 'in' ? 'Stock In' : 'Stock Out', quantity: Math.abs(qtyChange)});
-      item.quantity += qtyChange;
-      saveData();
-    }
-
     // Rendering
     function renderItemsTable() {
       const tbody = document.getElementById('items-table-body');
@@ -236,22 +211,6 @@
             <button onclick="editItem(${item.id})" class="text-blue-600 hover:underline mr-4">Edit</button>
             <button onclick="deleteItem(${item.id})" class="text-red-600 hover:underline">Delete</button>
           </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderTransactionsTable() {
-      const tbody = document.getElementById('transactions-table-body');
-      tbody.innerHTML = '';
-      transactions.slice().reverse().forEach(t => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-b hover:bg-purple-50';
-        tr.innerHTML = `
-          <td class="px-6 py-4">${t.date}</td>
-          <td class="px-6 py-4">${t.itemName}</td>
-          <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-sm ${t.type === 'Stock In' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${t.type}</span></td>
-          <td class="px-6 py-4">${t.quantity}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -306,11 +265,23 @@
 
     function saveData() {
       localStorage.setItem('inventoryItems', JSON.stringify(items));
-      localStorage.setItem('inventoryTransactions', JSON.stringify(transactions));
     }
 
+    // Handle hash navigation
+    function handleHashNavigation() {
+      const hash = window.location.hash.substring(1);
+      if (hash === 'items') {
+        showPage('items');
+      } else {
+        showPage('dashboard');
+      }
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashNavigation);
+
     // Initial load
-    showPage('dashboard');
+    handleHashNavigation();
   </script>
 </body>
 </html>

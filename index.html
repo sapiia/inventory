@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/index.css">
 </head>
+<body>
+    
 <body class="bg-gray-100 font-sans">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
@@ -22,15 +25,22 @@
         <ul class="space-y-2">
           <li><button id="nav-dashboard" class="w-full text-left py-3 px-4 rounded-lg sidebar-active flex items-center gap-3"><i class="fas fa-home"></i> Dashboard</button></li>
           <li><button id="nav-items" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-boxes"></i> Items</button></li>
+<<<<<<< HEAD
+          <li><a href="pages/transection.html" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+=======
           <li><button id="nav-transactions" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-exchange-alt"></i> Transactions</button></li>
+          <li><button id="nav-users" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-user"></i> Users</button></li>
+          <li><button id="nav-settings" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-cog"></i> Settings</button></li>
+>>>>>>> 899652b7bdc0d38af03d7404cb978d5bcc45327a
         </ul>
       </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto bg-gradient-to-br from-purple-50 to-blue-50 p-8">
-      <!-- Dashboard Page -->
+      <!-- Combined Dashboard Page -->
       <div id="page-dashboard" class="space-y-8">
+<<<<<<< HEAD
         <h2 class="text-3xl font-bold text-purple-800">Dashboard</h2>
         
         Stats Cards
@@ -46,18 +56,216 @@
           <div class="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-pink-600">
             <p class="text-gray-600">Low Stock Items</p>
             <p class="text-3xl font-bold text-pink-800" id="low-stock">0</p>
+=======
+        <!-- Header Section -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 mb-2">
+                <i class="fas fa-chart-line mr-3"></i>Dashboard
+              </h1>
+              <p class="text-gray-600 text-lg">Monitor your inventory and business performance</p>
+            </div>
+>>>>>>> 8efb3ebc5d12075aa6874aacbd8681b1f8e9749d
           </div>
         </div>
 
-        <!-- Charts -->
+        <!-- Inventory Stats Section -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 border-t-4 border-purple-600">
+          <h2 class="text-2xl font-bold text-purple-800 mb-6 flex items-center">
+            <i class="fas fa-warehouse mr-3"></i>Inventory Summary
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border-l-4 border-purple-600">
+              <p class="text-gray-600 text-sm font-medium">Total Inventory Value</p>
+              <p class="text-3xl font-bold text-purple-800 mt-2" id="total-value">$0.00</p>
+            </div>
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border-l-4 border-blue-600">
+              <p class="text-gray-600 text-sm font-medium">Total Items</p>
+              <p class="text-3xl font-bold text-blue-800 mt-2" id="total-items">0</p>
+            </div>
+            <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl p-6 border-l-4 border-pink-600">
+              <p class="text-gray-600 text-sm font-medium">Low Stock Items</p>
+              <p class="text-3xl font-bold text-pink-800 mt-2" id="low-stock">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div class="bg-white rounded-2xl shadow-lg p-6">
-            <h3 class="text-xl font-semibold mb-4">Monthly Stock Movement</h3>
-            <canvas id="barChart"></canvas>
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+              <i class="fas fa-chart-bar mr-2 text-purple-600"></i>Daily Sales Chart
+            </h3>
+            <canvas id="businessBarChart"></canvas>
           </div>
           <div class="bg-white rounded-2xl shadow-lg p-6">
-            <h3 class="text-xl font-semibold mb-4">Value by Category</h3>
-            <canvas id="pieChart"></canvas>
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+              <i class="fas fa-pie-chart mr-2 text-blue-600"></i>Weekly Sales by Product
+            </h3>
+            <canvas id="businessPieChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Customer Details Table -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+          <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-6">
+            <h2 class="text-2xl font-bold text-white flex items-center">
+              <i class="fas fa-table mr-3"></i>Customer Details
+            </h2>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50 border-b-2 border-gray-200">
+                <tr>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Id</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Customer</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Date</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Invoice Amount</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R217058</td>
+                  <td class="px-6 py-4">Jebeck</td>
+                  <td class="px-6 py-4">13/01/2022</td>
+                  <td class="px-6 py-4">$54,000</td>
+                  <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">Shipped</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R23308</td>
+                  <td class="px-6 py-4">Adham</td>
+                  <td class="px-6 py-4">13/01/2022</td>
+                  <td class="px-6 py-4">$88,050</td>
+                  <td class="px-6 py-4"><span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Delivered</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R23765</td>
+                  <td class="px-6 py-4">Melbourne</td>
+                  <td class="px-6 py-4">13/01/2022</td>
+                  <td class="px-6 py-4">$4,000</td>
+                  <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">Pending</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R24129</td>
+                  <td class="px-6 py-4">Alex Johnson</td>
+                  <td class="px-6 py-4">14/01/2022</td>
+                  <td class="px-6 py-4">$12,500</td>
+                  <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">Shipped</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R24567</td>
+                  <td class="px-6 py-4">Sarah Williams</td>
+                  <td class="px-6 py-4">15/01/2022</td>
+                  <td class="px-6 py-4">$7,800</td>
+                  <td class="px-6 py-4"><span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Delivered</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Business Additional Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <p class="text-gray-600 text-sm font-medium">Total Intake</p>
+            <p class="text-3xl font-bold text-purple-600 mt-2">$125,000</p>
+            <p class="text-xs text-gray-500 mt-1">All platform sales</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <p class="text-gray-600 text-sm font-medium">New Customers</p>
+            <p class="text-3xl font-bold text-blue-600 mt-2">850</p>
+            <p class="text-xs text-gray-500 mt-1">First time buyers</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <p class="text-gray-600 text-sm font-medium">Total Revenue</p>
+            <p class="text-3xl font-bold text-pink-600 mt-2">$89,500</p>
+            <p class="text-xs text-gray-500 mt-1">Net profit after expenses</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Page (admin-style list) -->
+      <div id="page-users" class="hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-3xl font-bold text-purple-800">Members</h2>
+            <p class="text-sm text-gray-600">Manage members and admins of the system</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <input id="users-search" type="search" placeholder="Search..." class="px-4 py-2 border rounded-lg w-64" />
+            <button id="btn-import-members" class="px-3 py-2 border rounded-lg">Import members</button>
+            <button id="btn-export-members" class="px-3 py-2 bg-gray-100 rounded-lg">Export members</button>
+            <button id="btn-add-user" class="px-4 py-2 bg-purple-600 text-white rounded-lg">Add new</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-4 overflow-auto">
+          <table class="w-full min-w-[900px] table-auto">
+            <thead class="bg-gray-50">
+              <tr class="text-left text-sm text-gray-600">
+                <th class="px-4 py-3">Photo</th>
+                <th class="px-4 py-3">Member name</th>
+                <th class="px-4 py-3">Mobile</th>
+                <th class="px-4 py-3">Email</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Operation</th>
+                <th class="px-4 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Settings Page -->
+      <div id="page-settings" class="hidden space-y-8">
+        <div class="flex justify-between items-center">
+          <h2 class="text-3xl font-bold text-purple-800">Settings</h2>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 max-w-2xl space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold">Dark mode</h3>
+              <p class="text-sm text-gray-600">Toggle application dark appearance</p>
+            </div>
+            <label class="inline-flex items-center">
+              <input id="toggle-dark" type="checkbox" class="form-checkbox h-5 w-5 text-purple-600" />
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold">Require Login</h3>
+              <p class="text-sm text-gray-600">Only authenticated users can use the system</p>
+            </div>
+            <label class="inline-flex items-center">
+              <input id="toggle-auth" type="checkbox" class="form-checkbox h-5 w-5 text-purple-600" checked />
+            </label>
+          </div>
+
+          <div>
+            <h3 class="font-semibold">Stock Overview</h3>
+            <p class="text-sm text-gray-600">Quick view of stock levels</p>
+            <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-600">Total Items</p>
+                <p id="settings-total-items" class="text-2xl font-bold">0</p>
+              </div>
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-600">Low Stock Items (&lt;10)</p>
+                <p id="settings-low-stock" class="text-2xl font-bold">0</p>
+              </div>
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-600">Export Reports</p>
+                <div class="mt-2 flex gap-2">
+                  <button id="export-daily" class="px-3 py-2 bg-purple-600 text-white rounded-lg">Export Daily CSV</button>
+                  <button id="export-monthly" class="px-3 py-2 border rounded-lg">Export Monthly CSV</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -108,6 +316,461 @@
       </form>
     </div>
   </div>
+<<<<<<< HEAD
   <script src="/assets/js/pdashboard.js"></script>
+=======
+
+    <!-- Modal Add/Edit User -->
+    <div id="user-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-lg">
+        <h3 id="user-modal-title" class="text-2xl font-bold mb-4">Add Member</h3>
+        <form id="user-form">
+          <input type="hidden" id="user-id">
+          <div class="grid grid-cols-1 gap-3">
+            <div>
+              <label class="text-sm text-gray-600">Photo</label>
+              <div class="flex items-center gap-3 mt-2">
+                <img id="user-pic-preview" src="../assets/images/default-avatar.png" class="w-16 h-16 rounded-md object-cover bg-gray-100" />
+                <input id="user-pic-input" type="file" accept="image/*" />
+              </div>
+            </div>
+            <div>
+              <label class="text-sm text-gray-600">Name</label>
+              <input id="user-name" class="w-full px-3 py-2 border rounded-lg" required />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-sm text-gray-600">Mobile</label>
+                <input id="user-mobile" class="w-full px-3 py-2 border rounded-lg" />
+              </div>
+              <div>
+                <label class="text-sm text-gray-600">Email</label>
+                <input id="user-email" type="email" class="w-full px-3 py-2 border rounded-lg" />
+              </div>
+            </div>
+            <div>
+              <label class="text-sm text-gray-600">Status</label>
+              <select id="user-status" class="w-full px-3 py-2 border rounded-lg">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex justify-end gap-3 mt-4">
+            <button type="button" id="user-cancel" class="px-4 py-2 border rounded-lg">Cancel</button>
+            <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Hidden import input -->
+    <input id="import-members-input" type="file" accept=".csv,text/csv" class="hidden" />
+
+  <script>
+    // Data storage
+    let items = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+    let nextId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
+
+    // Charts
+    let barChart, pieChart, businessBarChart, businessPieChart;
+
+    // Navigation
+    document.getElementById('nav-dashboard').addEventListener('click', () => showPage('dashboard'));
+    document.getElementById('nav-items').addEventListener('click', () => showPage('items'));
+<<<<<<< HEAD
+=======
+    document.getElementById('nav-transactions').addEventListener('click', () => {
+      window.location.href = 'pages/transection.html';
+    });
+    document.getElementById('nav-users').addEventListener('click', () => showPage('users'));
+    document.getElementById('nav-settings').addEventListener('click', () => showPage('settings'));
+>>>>>>> 899652b7bdc0d38af03d7404cb978d5bcc45327a
+
+    function showPage(page) {
+      document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`page-${page}`).classList.remove('hidden');
+
+      document.querySelectorAll('aside button').forEach(btn => btn.classList.remove('sidebar-active'));
+      document.getElementById(`nav-${page}`).classList.add('sidebar-active');
+
+      if (page === 'dashboard') {
+        updateDashboard();
+        initBusinessCharts();
+      }
+      if (page === 'items') renderItemsTable();
+      if (page === 'users') renderUsersPage();
+      if (page === 'settings') renderSettingsPage();
+    }
+
+    // CRUD for Items
+    document.getElementById('add-item-btn').addEventListener('click', openAddModal);
+    function openAddModal() {
+      document.getElementById('modal-title').textContent = 'Add New Item';
+      document.getElementById('item-form').reset();
+      document.getElementById('edit-id').value = '';
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    document.getElementById('modal-cancel').addEventListener('click', () => {
+      document.getElementById('item-modal').classList.add('hidden');
+    });
+
+    document.getElementById('item-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-id').value || nextId++;
+      const name = document.getElementById('item-name').value;
+      const category = document.getElementById('item-category').value;
+      const quantity = parseInt(document.getElementById('item-quantity').value);
+      const price = parseFloat(document.getElementById('item-price').value);
+
+      if (id > items.length && items.some(i => i.id === id)) id = nextId++; // safety
+
+      const existingIndex = items.findIndex(i => i.id === parseInt(id));
+      if (existingIndex > -1) {
+        items[existingIndex] = {id: parseInt(id), name, category, quantity, price};
+      } else {
+        items.push({id, name, category, quantity, price});
+      }
+
+      saveData();
+      document.getElementById('item-modal').classList.add('hidden');
+      renderItemsTable();
+      updateDashboard();
+    });
+
+    function editItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      document.getElementById('modal-title').textContent = 'Edit Item';
+      document.getElementById('edit-id').value = item.id;
+      document.getElementById('item-name').value = item.name;
+      document.getElementById('item-category').value = item.category;
+      document.getElementById('item-quantity').value = item.quantity;
+      document.getElementById('item-price').value = item.price;
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    function deleteItem(id) {
+      if (!confirm('Delete this item?')) return;
+      items = items.filter(i => i.id !== id);
+      saveData();
+      renderItemsTable();
+      updateDashboard();
+    }
+
+    // Rendering
+    function renderItemsTable() {
+      const tbody = document.getElementById('items-table-body');
+      tbody.innerHTML = '';
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b hover:bg-purple-50';
+        tr.innerHTML = `
+          <td class="px-6 py-4">${item.id}</td>
+          <td class="px-6 py-4">${item.name}</td>
+          <td class="px-6 py-4">${item.category}</td>
+          <td class="px-6 py-4">${item.quantity}</td>
+          <td class="px-6 py-4">$${item.price.toFixed(2)}</td>
+          <td class="px-6 py-4">
+            <button onclick="editItem(${item.id})" class="text-blue-600 hover:underline mr-4">Edit</button>
+            <button onclick="deleteItem(${item.id})" class="text-red-600 hover:underline">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Dashboard Update - Inventory Stats Only
+    function updateDashboard() {
+      const totalValue = items.reduce((sum, i) => sum + i.quantity * i.price, 0);
+      const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
+      const lowStock = items.filter(i => i.quantity < 10).length;
+
+      document.getElementById('total-value').textContent = `$${totalValue.toFixed(2)}`;
+      document.getElementById('total-items').textContent = totalItems;
+      document.getElementById('low-stock').textContent = lowStock;
+
+      // Initialize business charts right after updating stats
+      setTimeout(() => initBusinessCharts(), 100);
+    }
+
+    // Business Dashboard Charts
+    function initBusinessCharts() {
+      // Bar Chart - Sales by day
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const sales = [12, 19, 3, 5, 2, 3, 9];
+
+      const barCtx = document.getElementById('businessBarChart');
+      if (barCtx && barCtx.getContext) {
+        if (businessBarChart) businessBarChart.destroy();
+        businessBarChart = new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: days,
+            datasets: [{
+              label: 'Sales ($1000)',
+              data: sales,
+              backgroundColor: '#9333ea',
+              borderColor: '#7e22ce',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Pie Chart - Weekly Sales by Product
+      const pieCtx = document.getElementById('businessPieChart');
+      if (pieCtx && pieCtx.getContext) {
+        if (businessPieChart) businessPieChart.destroy();
+        businessPieChart = new Chart(pieCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Tops', 'Animal Care', 'Electronics', 'Books'],
+            datasets: [{
+              data: [85, 60, 45, 30],
+              backgroundColor: ['#9333ea', '#a855f7', '#c084fc', '#ddd6fe']
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem('inventoryItems', JSON.stringify(items));
+    }
+
+    /* ----------------- Users & Settings features ----------------- */
+    function loadProfile(){
+      try{return JSON.parse(localStorage.getItem('inventory_user_profile')) || {name:'',picture:''}}catch(e){return {name:'',picture:''}}
+    }
+    function saveProfile(p){ localStorage.setItem('inventory_user_profile', JSON.stringify(p)); }
+
+    // ----- Users management (members table) -----
+    function loadMembers(){ try{ return JSON.parse(localStorage.getItem('inventory_users')) || []; }catch(e){return []} }
+    function saveMembers(list){ localStorage.setItem('inventory_users', JSON.stringify(list)); }
+
+    function renderUsersPage(){
+      const tbody = document.getElementById('users-table-body');
+      const members = loadMembers();
+      const q = (document.getElementById('users-search') && document.getElementById('users-search').value || '').toLowerCase();
+      tbody.innerHTML = '';
+      members.filter(m=> !q || (m.name && m.name.toLowerCase().includes(q)) || (m.email && m.email.toLowerCase().includes(q)) || (m.mobile && m.mobile.toLowerCase().includes(q))).forEach(m=>{
+        const tr = document.createElement('tr');
+        tr.className = 'border-b';
+
+        // Photo
+        const tdPhoto = document.createElement('td'); tdPhoto.className = 'px-4 py-3';
+        const img = document.createElement('img'); img.src = m.picture || '../assets/images/default-avatar.png'; img.className = 'w-12 h-12 rounded-md object-cover'; tdPhoto.appendChild(img);
+
+        // Name
+        const tdName = document.createElement('td'); tdName.className = 'px-4 py-3 font-medium'; tdName.textContent = m.name || '';
+
+        // Mobile
+        const tdMobile = document.createElement('td'); tdMobile.className = 'px-4 py-3'; tdMobile.textContent = m.mobile || '';
+
+        // Email
+        const tdEmail = document.createElement('td'); tdEmail.className = 'px-4 py-3'; tdEmail.textContent = m.email || '';
+
+        // Status
+        const tdStatus = document.createElement('td'); tdStatus.className = 'px-4 py-3';
+        const spanStatus = document.createElement('span'); spanStatus.className = `px-3 py-1 rounded-full text-sm ${m.status==='Active'?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}`; spanStatus.textContent = m.status || 'Active'; tdStatus.appendChild(spanStatus);
+
+        // Operation (Make admin placeholder)
+        const tdOp = document.createElement('td'); tdOp.className = 'px-4 py-3';
+        if(m.status === 'Active'){
+          const btnOp = document.createElement('button'); btnOp.className = 'px-3 py-1 bg-purple-600 text-white rounded-lg text-sm'; btnOp.textContent = 'Make admin';
+          tdOp.appendChild(btnOp);
+        } else {
+          tdOp.textContent = '-';
+        }
+
+        // Actions (icons)
+        const tdAction = document.createElement('td'); tdAction.className = 'px-4 py-3 flex items-center gap-2';
+
+        const btnEdit = document.createElement('button'); btnEdit.title = 'Edit'; btnEdit.className = 'p-2 rounded-md hover:bg-gray-100'; btnEdit.innerHTML = '<i class="fas fa-pen text-blue-600"></i>';
+        btnEdit.addEventListener('click', ()=> editMember(m.id));
+
+        const btnDelete = document.createElement('button'); btnDelete.title = 'Delete'; btnDelete.className = 'p-2 rounded-md hover:bg-gray-100'; btnDelete.innerHTML = '<i class="fas fa-trash text-red-600"></i>';
+        btnDelete.addEventListener('click', ()=> deleteMember(m.id));
+
+        const btnLogin = document.createElement('button'); btnLogin.title = 'Login'; btnLogin.className = 'p-2 rounded-md bg-gray-100'; btnLogin.innerHTML = '<i class="fas fa-sign-in-alt text-gray-700"></i>';
+        btnLogin.addEventListener('click', ()=> loginAsMember(m.id));
+
+        tdAction.appendChild(btnEdit);
+        tdAction.appendChild(btnDelete);
+        tdAction.appendChild(btnLogin);
+
+        tr.appendChild(tdPhoto);
+        tr.appendChild(tdName);
+        tr.appendChild(tdMobile);
+        tr.appendChild(tdEmail);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdOp);
+        tr.appendChild(tdAction);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Search
+    document.getElementById('users-search').addEventListener('input', ()=> renderUsersPage());
+
+    // Add new
+    document.getElementById('btn-add-user').addEventListener('click', ()=> openMemberModal());
+
+    function openMemberModal(member){
+      document.getElementById('user-form').reset();
+      document.getElementById('user-id').value = '';
+      document.getElementById('user-pic-preview').src = '../assets/images/default-avatar.png';
+      document.getElementById('user-modal-title').textContent = member? 'Edit Member':'Add Member';
+      if(member){
+        document.getElementById('user-id').value = member.id;
+        document.getElementById('user-name').value = member.name || '';
+        document.getElementById('user-mobile').value = member.mobile || '';
+        document.getElementById('user-email').value = member.email || '';
+        document.getElementById('user-status').value = member.status || 'Active';
+        document.getElementById('user-pic-preview').src = member.picture || '../assets/images/default-avatar.png';
+      }
+      document.getElementById('user-modal').classList.remove('hidden');
+    }
+
+    document.getElementById('user-cancel').addEventListener('click', ()=> document.getElementById('user-modal').classList.add('hidden'));
+
+    // Picture input in modal
+    document.getElementById('user-pic-input').addEventListener('change', (e)=>{
+      const f = e.target.files && e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload=()=>{ document.getElementById('user-pic-preview').src = r.result; document.getElementById('user-pic-preview').dataset.pending = r.result; }; r.readAsDataURL(f);
+    });
+
+    // Save member
+    document.getElementById('user-form').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const idField = document.getElementById('user-id');
+      const id = idField.value || ('u' + Date.now());
+      const name = document.getElementById('user-name').value.trim();
+      const mobile = document.getElementById('user-mobile').value.trim();
+      const email = document.getElementById('user-email').value.trim();
+      const status = document.getElementById('user-status').value;
+      const picEl = document.getElementById('user-pic-preview');
+      const picture = picEl.dataset.pending || picEl.src;
+      let members = loadMembers();
+      const idx = members.findIndex(m=>m.id === id);
+      const obj = {id, name, mobile, email, status, picture};
+      if(idx>-1) members[idx]=obj; else members.push(obj);
+      saveMembers(members);
+      document.getElementById('user-modal').classList.add('hidden');
+      renderUsersPage();
+    });
+
+    // Edit/Delete/Login actions
+    window.editMember = function(id){ const members = loadMembers(); const m = members.find(x=>x.id===id); if(m) openMemberModal(m); };
+    window.deleteMember = function(id){ if(!confirm('Delete member?')) return; let members = loadMembers(); members = members.filter(m=>m.id!==id); saveMembers(members); renderUsersPage(); };
+    window.loginAsMember = function(id){ const members = loadMembers(); const m = members.find(x=>x.id===id); if(!m){ alert('Member not found'); return; } auth.login({username: m.name||m.email||m.id, password:'dummy'}, true).then(res=>{ if(res.ok) { alert('Logged in as '+(m.name||m.email)); location.reload(); } else alert('Login failed'); }); };
+
+    // Import/Export members
+    document.getElementById('btn-export-members').addEventListener('click', ()=>{
+      const members = loadMembers(); const headers = ['id','name','mobile','email','status']; const lines = [headers.join(',')]; members.forEach(m=> lines.push([m.id,`"${(m.name||'').replace(/"/g,'""')}`,`"${(m.mobile||'').replace(/"/g,'""')}`,`"${(m.email||'').replace(/"/g,'""')}`, m.status||'Active'].join(',')) ); const csv = lines.join('\n'); const name = `members-${new Date().toISOString().slice(0,10)}.csv`; const blob = new Blob([csv],{type:'text/csv'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('btn-import-members').addEventListener('click', ()=> document.getElementById('import-members-input').click());
+    document.getElementById('import-members-input').addEventListener('change', (e)=>{
+      const f = e.target.files && e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ const text = r.result; const lines = text.split(/\r?\n/).filter(Boolean); const hdr = lines.shift().split(/,\s*/).map(s=>s.replace(/"/g,'')); const members = loadMembers(); lines.forEach(l=>{ const cols = l.split(/,\s*/); const id = cols[0] || ('u'+Date.now()+Math.random()); const name = (cols[1]||'').replace(/"/g,''); const mobile = (cols[2]||'').replace(/"/g,''); const email = (cols[3]||'').replace(/"/g,''); const status = (cols[4]||'Active'); members.push({id,name,mobile,email,status,picture:'../assets/images/default-avatar.png'}); }); saveMembers(members); renderUsersPage(); alert('Import complete'); }; r.readAsText(f);
+    });
+
+
+    // Settings
+    function loadSettings(){ try{return JSON.parse(localStorage.getItem('inventory_settings')) || {dark:false,requireAuth:true}}catch(e){return {dark:false,requireAuth:true}} }
+    function saveSettings(s){ localStorage.setItem('inventory_settings', JSON.stringify(s)); }
+
+    function renderSettingsPage(){
+      const s = loadSettings();
+      document.getElementById('toggle-dark').checked = !!s.dark;
+      document.getElementById('toggle-auth').checked = s.requireAuth !== false;
+      // stock overview
+      document.getElementById('settings-total-items').textContent = items.reduce((sum,i)=>sum + i.quantity,0);
+      document.getElementById('settings-low-stock').textContent = items.filter(i=>i.quantity<10).length;
+    }
+
+    document.getElementById('toggle-dark').addEventListener('change', (e)=>{
+      const s = loadSettings(); s.dark = !!e.target.checked; saveSettings(s); applyDarkMode(s.dark);
+    });
+
+    document.getElementById('toggle-auth').addEventListener('change', (e)=>{
+      const s = loadSettings(); s.requireAuth = !!e.target.checked; saveSettings(s);
+    });
+
+    function applyDarkMode(enabled){
+      if(enabled){ document.documentElement.classList.add('dark'); document.body.classList.add('bg-gray-900'); }
+      else { document.documentElement.classList.remove('dark'); document.body.classList.remove('bg-gray-900'); }
+    }
+
+    // Export CSV helpers
+    function itemsToCSV(rows){
+      const headers = ['id','name','category','quantity','price'];
+      const lines = [headers.join(',')];
+      rows.forEach(r=> lines.push([r.id,`"${r.name.replace(/"/g,'""')}` , r.category, r.quantity, r.price].join(',')));
+      return lines.join('\n');
+    }
+
+    function downloadCSV(filename, content){
+      const blob = new Blob([content], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('export-daily').addEventListener('click', ()=>{
+      const csv = itemsToCSV(items);
+      const name = `inventory-daily-${new Date().toISOString().slice(0,10)}.csv`;
+      downloadCSV(name, csv);
+    });
+    document.getElementById('export-monthly').addEventListener('click', ()=>{
+      const csv = itemsToCSV(items);
+      const d = new Date(); const name = `inventory-monthly-${d.getFullYear()}-${('0'+(d.getMonth()+1)).slice(-2)}.csv`;
+      downloadCSV(name, csv);
+    });
+
+    // Enforce require-login on navigation
+    const initialSettings = loadSettings(); applyDarkMode(initialSettings.dark);
+
+    const originalShowPage = showPage;
+    window.showPage = function(page){
+      const s = loadSettings();
+      if(s.requireAuth && window.auth && auth.isAuthenticated && !auth.isAuthenticated()){
+        // redirect to login when auth required
+        window.location.href = 'pages/login.html';
+        return;
+      }
+      originalShowPage(page);
+    };
+
+
+    // Handle hash navigation
+    function handleHashNavigation() {
+      const hash = window.location.hash.substring(1);
+      if (hash === 'items') {
+        showPage('items');
+      } else {
+        showPage('dashboard');
+      }
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashNavigation);
+
+    // Initial load
+    handleHashNavigation();
+  </script>
+>>>>>>> 8efb3ebc5d12075aa6874aacbd8681b1f8e9749d
 </body>
 </html>

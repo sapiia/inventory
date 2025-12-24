@@ -1,0 +1,189 @@
+ body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        /* Added animated background with floating shapes */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-30px) translateX(15px); }
+            66% { transform: translateY(15px) translateX(-20px); }
+        }
+
+        @keyframes pulse-blob {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(147, 112, 219, 0.2) 0%, transparent 50%);
+            animation: rotate-slow 20s linear infinite;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(37, 99, 235, 0.1) 0%, rgba(29, 78, 216, 0.05) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .gradient-blob {
+            background: linear-gradient(135deg, rgba(147, 112, 219, 0.8) 0%, rgba(59, 130, 246, 0.9) 25%, rgba(30, 58, 138, 1) 75%, rgba(15, 23, 70, 1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Enhanced blob animations with multiple layers */
+        .gradient-blob::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(200, 150, 255, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .gradient-blob::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(100, 150, 255, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: float 12s ease-in-out infinite reverse;
+        }
+        
+        .input-field {
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            background: #fff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        /* Fixed icon styling for better visibility and interaction */
+        .input-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .input-icon:hover {
+            color: #6b7280;
+        }
+        
+        .toggle-password {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .toggle-password:hover .input-icon {
+            color: #374151;
+        }
+        
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border: 1px solid #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .social-btn:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #0052cc 0%, #003fa0 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 82, 204, 0.3);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Improved home icon styling */
+        .home-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            animation: pulse-blob 3s ease-in-out infinite;
+        }
+        
+        .checkbox-custom {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #0052cc;
+        }

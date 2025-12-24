@@ -27,8 +27,9 @@
       <nav class="flex-1 p-4">
         <ul class="space-y-2">
           <li><button id="nav-dashboard" class="w-full text-left py-3 px-4 rounded-lg sidebar-active flex items-center gap-3"><i class="fas fa-home"></i> Dashboard</button></li>
+          <li><button id="nav-business" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-chart-line"></i> Business Dashboard</button></li>
           <li><button id="nav-items" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-boxes"></i> Items</button></li>
-          <li><button id="nav-transactions" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-exchange-alt"></i> Transactions</button></li>
+          <li><a href="pages/transection.html" class="w-full text-left py-3 px-4 rounded-lg hover:bg-purple-700 flex items-center gap-3"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
         </ul>
       </nav>
     </aside>
@@ -68,6 +69,155 @@
         </div>
       </div>
 
+      <!-- Business Dashboard Page -->
+      <div id="page-business" class="hidden space-y-8">
+        <!-- Header Section -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 mb-2">
+                <i class="fas fa-chart-line mr-3"></i>Business Dashboard
+              </h1>
+              <p class="text-gray-600 text-lg">Monitor your business performance and key metrics</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Weekly Balance</p>
+                <p class="text-3xl font-bold text-purple-600">$20k</p>
+              </div>
+              <div class="bg-purple-100 p-4 rounded-full">
+                <i class="fas fa-wallet text-purple-600 text-2xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Orders in Line</p>
+                <p class="text-3xl font-bold text-blue-600">750</p>
+              </div>
+              <div class="bg-blue-100 p-4 rounded-full">
+                <i class="fas fa-shopping-cart text-blue-600 text-2xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-pink-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">New Clients</p>
+                <p class="text-3xl font-bold text-pink-600">150</p>
+              </div>
+              <div class="bg-pink-100 p-4 rounded-full">
+                <i class="fas fa-users text-pink-600 text-2xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+              <i class="fas fa-chart-bar mr-2 text-purple-600"></i>Sales Chart
+            </h3>
+            <canvas id="businessBarChart"></canvas>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h3 class="text-xl font-semibold mb-4 flex items-center">
+              <i class="fas fa-pie-chart mr-2 text-blue-600"></i>Weekly Sales by Product
+            </h3>
+            <canvas id="businessPieChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Customer Details Table -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+          <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-6">
+            <h2 class="text-2xl font-bold text-white flex items-center">
+              <i class="fas fa-table mr-3"></i>Customer Details
+            </h2>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50 border-b-2 border-gray-200">
+                <tr>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Id</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Customer</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Date</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Invoice Amount</th>
+                  <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R217058</td>
+                  <td class="px-6 py-4">Jebeck</td>
+                  <td class="px-6 py-4">13/01/2022</td>
+                  <td class="px-6 py-4">$54,000</td>
+                  <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">Shipped</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R23308</td>
+                  <td class="px-6 py-4">Adham</td>
+                  <td class="px-6 py-4">13/01/2022</td>
+                  <td class="px-6 py-4">$88,050</td>
+                  <td class="px-6 py-4"><span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Delivered</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R23765</td>
+                  <td class="px-6 py-4">Melbourne</td>
+                  <td class="px-6 py-4">13/01/2022</td>
+                  <td class="px-6 py-4">$4,000</td>
+                  <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">Pending</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R24129</td>
+                  <td class="px-6 py-4">Alex Johnson</td>
+                  <td class="px-6 py-4">14/01/2022</td>
+                  <td class="px-6 py-4">$12,500</td>
+                  <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">Shipped</span></td>
+                </tr>
+                <tr class="hover:bg-purple-50 transition-colors">
+                  <td class="px-6 py-4">R24567</td>
+                  <td class="px-6 py-4">Sarah Williams</td>
+                  <td class="px-6 py-4">15/01/2022</td>
+                  <td class="px-6 py-4">$7,800</td>
+                  <td class="px-6 py-4"><span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Delivered</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Business Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <p class="text-gray-600 text-sm font-medium">Total Intake</p>
+            <p class="text-3xl font-bold text-purple-600 mt-2">$125,000</p>
+            <p class="text-xs text-gray-500 mt-1">All platform sales</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <p class="text-gray-600 text-sm font-medium">New Customers</p>
+            <p class="text-3xl font-bold text-blue-600 mt-2">850</p>
+            <p class="text-xs text-gray-500 mt-1">First time buyers</p>
+          </div>
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <p class="text-gray-600 text-sm font-medium">Total Revenue</p>
+            <p class="text-3xl font-bold text-pink-600 mt-2">$89,500</p>
+            <p class="text-xs text-gray-500 mt-1">Net profit after expenses</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Items Page -->
       <div id="page-items" class="hidden space-y-8">
         <div class="flex justify-between items-center">
@@ -91,23 +241,7 @@
         </div>
       </div>
 
-      <!-- Transactions Page -->
-      <div id="page-transactions" class="hidden space-y-8">
-        <h2 class="text-3xl font-bold text-purple-800">Transaction History</h2>
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <table class="w-full">
-            <thead class="bg-purple-100">
-              <tr>
-                <th class="px-6 py-4 text-left">Date</th>
-                <th class="px-6 py-4 text-left">Item</th>
-                <th class="px-6 py-4 text-left">Type</th>
-                <th class="px-6 py-4 text-left">Quantity</th>
-              </tr>
-            </thead>
-            <tbody id="transactions-table-body"></tbody>
-          </table>
-        </div>
-      </div>
+
     </main>
   </div>
 
@@ -134,27 +268,26 @@
   <script>
     // Data storage
     let items = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-    let transactions = JSON.parse(localStorage.getItem('inventoryTransactions')) || [];
     let nextId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
 
     // Charts
-    let barChart, pieChart;
+    let barChart, pieChart, businessBarChart, businessPieChart;
 
     // Navigation
     document.getElementById('nav-dashboard').addEventListener('click', () => showPage('dashboard'));
+    document.getElementById('nav-business').addEventListener('click', () => showPage('business'));
     document.getElementById('nav-items').addEventListener('click', () => showPage('items'));
-    document.getElementById('nav-transactions').addEventListener('click', () => showPage('transactions'));
 
     function showPage(page) {
       document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
       document.getElementById(`page-${page}`).classList.remove('hidden');
-      
+
       document.querySelectorAll('aside button').forEach(btn => btn.classList.remove('sidebar-active'));
       document.getElementById(`nav-${page}`).classList.add('sidebar-active');
 
       if (page === 'dashboard') updateDashboard();
+      if (page === 'business') initBusinessCharts();
       if (page === 'items') renderItemsTable();
-      if (page === 'transactions') renderTransactionsTable();
     }
 
     // CRUD for Items
@@ -213,15 +346,6 @@
       updateDashboard();
     }
 
-    function addTransaction(itemId, type, qtyChange) {
-      const item = items.find(i => i.id === itemId);
-      if (!item) return;
-      const date = new Date().toLocaleDateString();
-      transactions.push({date, itemName: item.name, type: type === 'in' ? 'Stock In' : 'Stock Out', quantity: Math.abs(qtyChange)});
-      item.quantity += qtyChange;
-      saveData();
-    }
-
     // Rendering
     function renderItemsTable() {
       const tbody = document.getElementById('items-table-body');
@@ -239,22 +363,6 @@
             <button onclick="editItem(${item.id})" class="text-blue-600 hover:underline mr-4">Edit</button>
             <button onclick="deleteItem(${item.id})" class="text-red-600 hover:underline">Delete</button>
           </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderTransactionsTable() {
-      const tbody = document.getElementById('transactions-table-body');
-      tbody.innerHTML = '';
-      transactions.slice().reverse().forEach(t => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-b hover:bg-purple-50';
-        tr.innerHTML = `
-          <td class="px-6 py-4">${t.date}</td>
-          <td class="px-6 py-4">${t.itemName}</td>
-          <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-sm ${t.type === 'Stock In' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${t.type}</span></td>
-          <td class="px-6 py-4">${t.quantity}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -307,13 +415,79 @@
       });
     }
 
-    function saveData() {
-      localStorage.setItem('inventoryItems', JSON.stringify(items));
-      localStorage.setItem('inventoryTransactions', JSON.stringify(transactions));
+    // Business Dashboard Charts
+    function initBusinessCharts() {
+      // Bar Chart - Sales by day
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const sales = [12, 19, 3, 5, 2, 3, 9];
+
+      const barCtx = document.getElementById('businessBarChart');
+      if (barCtx && barCtx.getContext) {
+        if (businessBarChart) businessBarChart.destroy();
+        businessBarChart = new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: days,
+            datasets: [{
+              label: 'Sales ($1000)',
+              data: sales,
+              backgroundColor: '#9333ea',
+              borderColor: '#7e22ce',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Pie Chart - Weekly Sales by Product
+      const pieCtx = document.getElementById('businessPieChart');
+      if (pieCtx && pieCtx.getContext) {
+        if (businessPieChart) businessPieChart.destroy();
+        businessPieChart = new Chart(pieCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Tops', 'Animal Care', 'Electronics', 'Books'],
+            datasets: [{
+              data: [85, 60, 45, 30],
+              backgroundColor: ['#9333ea', '#a855f7', '#c084fc', '#ddd6fe']
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      }
     }
 
+    function saveData() {
+      localStorage.setItem('inventoryItems', JSON.stringify(items));
+    }
+
+    // Handle hash navigation
+    function handleHashNavigation() {
+      const hash = window.location.hash.substring(1);
+      if (hash === 'items') {
+        showPage('items');
+      } else if (hash === 'business') {
+        showPage('business');
+      } else {
+        showPage('dashboard');
+      }
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashNavigation);
+
     // Initial load
-    showPage('dashboard');
+    handleHashNavigation();
   </script>
 </body>
 </html>

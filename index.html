@@ -111,6 +111,9 @@
         </button>
       </div>
 
+      <!-- Category Navigation -->
+      <div id="category-nav" class="flex gap-3 overflow-x-auto pb-2"></div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="items-grid">
         <!-- Items will be rendered here as cards -->
       </div>
@@ -173,13 +176,20 @@
         <h3 id="modal-title" class="text-2xl font-bold mb-6">Add New Item</h3>
         <form id="item-form" class="space-y-5">
           <input type="hidden" id="edit-id" />
+          <div id="item-image-preview-container" class="hidden">
+            <img id="item-image-preview" class="w-full h-48 object-cover rounded-lg mb-4" src="" alt="Item preview" />
+          </div>
+          <div id="item-image-upload" class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Item Image (optional)</label>
+            <input type="file" accept="image/*" id="item-image-input" class="input file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+          </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
             <input type="text" id="item-name" required class="input" placeholder="Product name" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Category / Type</label>
-            <input type="text" id="item-category" required class="input" placeholder="e.g. Electronics, Car, Skincare" />
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <input type="text" id="item-category" required class="input" placeholder="e.g. Skin care, Car, Moto" />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
@@ -191,7 +201,7 @@
               <input type="number" step="0.01" id="item-price" min="0" required class="input" />
             </div>
           </div>
-          <div class="flex justify-end gap-3 pt-4">
+          <div class="flex justify-end gap-3 pt-4" id="modal-actions">
             <button type="button" id="modal-cancel" class="btn-cancel">Cancel</button>
             <button type="submit" class="btn-primary">Save Item</button>
           </div>
@@ -239,6 +249,7 @@
 // ==================== CORE DATA & STATE ====================
 let items = JSON.parse(localStorage.getItem('inventory_items')) || [];
 let nextItemId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
+let currentCategory = 'All';
 
 let barChart, pieChart;
 
@@ -263,7 +274,10 @@ function showPage(page) {
     updateDashboardStats();
     initCharts();
   }
-  if (page === 'items') renderItems();
+  if (page === 'items') {
+    renderCategoryNav();
+    renderItems();
+  }
   if (page === 'users') renderUsers();
 }
 
@@ -319,41 +333,136 @@ function initCharts() {
 const addItemBtn = document.getElementById('add-item-btn');
 const itemModal = document.getElementById('item-modal');
 const itemForm = document.getElementById('item-form');
+const modalTitle = document.getElementById('modal-title');
+const modalActions = document.getElementById('modal-actions');
+const itemImagePreviewContainer = document.getElementById('item-image-preview-container');
+const itemImagePreview = document.getElementById('item-image-preview');
+const itemImageUpload = document.getElementById('item-image-upload');
+const itemImageInput = document.getElementById('item-image-input');
+const itemNameInput = document.getElementById('item-name');
+const itemCategoryInput = document.getElementById('item-category');
+const itemQuantityInput = document.getElementById('item-quantity');
+const itemPriceInput = document.getElementById('item-price');
 
-addItemBtn?.addEventListener('click', () => {
-  document.getElementById('modal-title').textContent = 'Add New Item';
-  itemForm.reset();
-  document.getElementById('edit-id').value = '';
-  itemModal.classList.remove('hidden');
-});
+let modalMode = 'add'; // 'add', 'edit', 'view'
+
+addItemBtn?.addEventListener('click', () => openItemModal('add'));
 
 document.getElementById('modal-cancel')?.addEventListener('click', () => {
   itemModal.classList.add('hidden');
 });
 
+itemImageInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      itemImagePreview.src = ev.target.result;
+      itemImagePreviewContainer.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
 itemForm?.addEventListener('submit', e => {
   e.preventDefault();
+  if (modalMode === 'view') return;
 
   const id = parseInt(document.getElementById('edit-id').value) || nextItemId++;
-  const name = document.getElementById('item-name').value.trim();
-  const category = document.getElementById('item-category').value.trim();
-  const quantity = parseInt(document.getElementById('item-quantity').value) || 0;
-  const price = parseFloat(document.getElementById('item-price').value) || 0;
+  const name = itemNameInput.value.trim();
+  const category = itemCategoryInput.value.trim();
+  const quantity = parseInt(itemQuantityInput.value) || 0;
+  const price = parseFloat(itemPriceInput.value) || 0;
+  const image = itemImagePreview.src || '';
 
   const itemIndex = items.findIndex(i => i.id === id);
   if (itemIndex > -1) {
-    items[itemIndex] = { id, name, category, quantity, price };
+    items[itemIndex] = { id, name, category, quantity, price, image };
   } else {
-    items.push({ id, name, category, quantity, price });
+    items.push({ id, name, category, quantity, price, image });
   }
 
   localStorage.setItem('inventory_items', JSON.stringify(items));
   itemModal.classList.add('hidden');
+  renderCategoryNav();
   renderItems();
   if (!document.getElementById('page-dashboard').classList.contains('hidden')) {
     updateDashboardStats();
   }
 });
+
+function openItemModal(mode, item = null) {
+  modalMode = mode;
+  itemForm.reset();
+  itemImagePreviewContainer.classList.add('hidden');
+  itemImageInput.value = '';
+
+  if (mode === 'add') {
+    modalTitle.textContent = 'Add New Item';
+    enableInputs(true);
+    modalActions.innerHTML = `
+      <button type="button" id="modal-cancel" class="btn-cancel">Cancel</button>
+      <button type="submit" class="btn-primary">Save Item</button>
+    `;
+  } else if (mode === 'edit' && item) {
+    modalTitle.textContent = 'Edit Item';
+    fillItemForm(item);
+    enableInputs(true);
+    modalActions.innerHTML = `
+      <button type="button" id="modal-cancel" class="btn-cancel">Cancel</button>
+      <button type="submit" class="btn-primary">Save Changes</button>
+    `;
+  } else if (mode === 'view' && item) {
+    modalTitle.textContent = 'Item Details';
+    fillItemForm(item);
+    enableInputs(false);
+    modalActions.innerHTML = `
+      <button type="button" id="modal-close" class="btn-primary">Close</button>
+    `;
+    document.getElementById('modal-close').addEventListener('click', () => itemModal.classList.add('hidden'));
+  }
+
+  itemModal.classList.remove('hidden');
+}
+
+function fillItemForm(item) {
+  document.getElementById('edit-id').value = item.id;
+  itemNameInput.value = item.name;
+  itemCategoryInput.value = item.category;
+  itemQuantityInput.value = item.quantity;
+  itemPriceInput.value = item.price;
+  if (item.image) {
+    itemImagePreview.src = item.image;
+    itemImagePreviewContainer.classList.remove('hidden');
+  }
+}
+
+function enableInputs(enabled) {
+  const inputs = [itemNameInput, itemCategoryInput, itemQuantityInput, itemPriceInput, itemImageInput];
+  inputs.forEach(input => {
+    input.disabled = !enabled;
+  });
+  itemImageUpload.classList.toggle('hidden', !enabled);
+}
+
+function renderCategoryNav() {
+  const nav = document.getElementById('category-nav');
+  nav.innerHTML = '';
+
+  const categories = ['All', ...new Set(items.map(i => i.category).filter(c => c))].sort();
+
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.textContent = cat;
+    btn.className = `px-4 py-2 rounded-full transition-colors ${currentCategory === cat ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`;
+    btn.addEventListener('click', () => {
+      currentCategory = cat;
+      renderCategoryNav();
+      renderItems();
+    });
+    nav.appendChild(btn);
+  });
+}
 
 function renderItems() {
   const container = document.getElementById('items-grid');
@@ -361,28 +470,39 @@ function renderItems() {
 
   container.innerHTML = '';
 
-  if (items.length === 0) {
-    container.innerHTML = '<p class="col-span-full text-center text-gray-500 py-12">No items yet. Add your first product!</p>';
+  let filteredItems = items;
+  if (currentCategory !== 'All') {
+    filteredItems = items.filter(i => i.category === currentCategory);
+  }
+
+  if (filteredItems.length === 0) {
+    container.innerHTML = '<p class="col-span-full text-center text-gray-500 py-12">No items in this category. Add your first product!</p>';
     return;
   }
 
-  items.forEach(item => {
+  filteredItems.forEach(item => {
     const card = document.createElement('div');
     card.className = 'bg-white rounded-xl shadow hover:shadow-lg transition-all overflow-hidden';
     card.innerHTML = `
+      <div class="aspect-video bg-gray-100">
+        <img src="${item.image || 'https://via.placeholder.com/400x225?text=No+Image'}" alt="${item.name}" class="w-full h-full object-cover" />
+      </div>
       <div class="p-5">
         <h3 class="font-bold text-lg text-gray-800 mb-1">${item.name}</h3>
-        <p class="text-sm text-indigo-600 mb-3">${item.category}</p>
+        <p class="text-sm text-indigo-600 mb-3">${item.category || 'Uncategorized'}</p>
         <div class="flex justify-between items-end">
           <div>
             <p class="text-2xl font-bold text-gray-900">$${item.price.toFixed(2)}</p>
-            <p class="text-sm text-gray-500">× ${item.quantity}</p>
+            <p class="text-sm text-gray-500">Quantity: ${item.quantity}</p>
           </div>
           <div class="flex gap-2">
-            <button onclick="editItem(${item.id})" class="text-blue-600 hover:text-blue-800">
+            <button onclick="openItemModal('view', ${JSON.stringify(item)})" class="text-green-600 hover:text-green-800" title="View Details">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button onclick="openItemModal('edit', ${JSON.stringify(item)})" class="text-blue-600 hover:text-blue-800" title="Edit">
               <i class="fas fa-edit"></i>
             </button>
-            <button onclick="deleteItem(${item.id})" class="text-red-600 hover:text-red-800">
+            <button onclick="deleteItem(${item.id})" class="text-red-600 hover:text-red-800" title="Delete">
               <i class="fas fa-trash-alt"></i>
             </button>
           </div>
@@ -393,24 +513,11 @@ function renderItems() {
   });
 }
 
-window.editItem = function(id) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-
-  document.getElementById('modal-title').textContent = 'Edit Item';
-  document.getElementById('edit-id').value = item.id;
-  document.getElementById('item-name').value = item.name;
-  document.getElementById('item-category').value = item.category;
-  document.getElementById('item-quantity').value = item.quantity;
-  document.getElementById('item-price').value = item.price;
-
-  itemModal.classList.remove('hidden');
-};
-
 window.deleteItem = function(id) {
   if (!confirm('Delete this item permanently?')) return;
   items = items.filter(i => i.id !== id);
   localStorage.setItem('inventory_items', JSON.stringify(items));
+  renderCategoryNav();
   renderItems();
   updateDashboardStats();
 };
@@ -422,6 +529,7 @@ function init() {
   showPage(hash);
 
   // Initial render
+  renderCategoryNav();
   renderItems();
 }
 

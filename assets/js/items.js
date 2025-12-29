@@ -309,9 +309,10 @@ function clearForm() {
 // Render sidebar
 function renderSidebar() {
   const submenu = document.getElementById("items-submenu");
-  if (!submenu) return;
-  // Keep the Items submenu empty (no types shown here)
-  submenu.innerHTML = '';
+  submenu.innerHTML = '<li onclick="goBackToTypes()" class="submenu-item cursor-pointer">All Types</li>';
+  productTypes.forEach(type => {
+    submenu.innerHTML += `<li onclick="selectType('${type}')" class="submenu-item cursor-pointer">${type}</li>`;
+  });
 }
 
 // Initialize

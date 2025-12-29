@@ -1,10 +1,10 @@
-/* Sidebar */
-.sidebar {
+/* Sidebar */ 
+/* .sidebar {
   width: 260px;
   background: linear-gradient(135deg, #6b21a8, #7c3aed, #8b5cf6);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
-}
+}  */
 
 .sidebar::before {
   content: '';

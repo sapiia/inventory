@@ -12,6 +12,19 @@
   <style>
     .sidebar-active { @apply bg-purple-700 text-white; }
   </style>
+  <style>
+    /* Basic dark-mode overrides for elements used in the app */
+    .dark body { background: #0b1220; color: #e6eef8; }
+    .dark aside { background: linear-gradient(180deg,#111827,#0b1220) !important; }
+    .dark main { background: linear-gradient(180deg,#071026,#071226) !important; }
+    .dark .bg-white { background-color: #081025 !important; color: #e6eef8 !important; border-color: #122032 !important; box-shadow: 0 6px 24px rgba(0,0,0,0.6) !important; }
+    .dark .text-gray-600 { color: #9fb0c8 !important; }
+    .dark .text-purple-800 { color: #c7b3ff !important; }
+    .dark .bg-gradient-to-br.from-purple-50 { background: linear-gradient(180deg,#071026,#071226) !important; }
+    .dark .border-gray-50 { border-color: rgba(255,255,255,0.04) !important; }
+    .dark .border { border-color: rgba(255,255,255,0.04) !important; }
+    .dark .shadow-lg, .dark .shadow-2xl { box-shadow: 0 6px 30px rgba(0,0,0,0.6) !important; }
+  </style>
 </head>
 <body class="bg-gray-100 font-sans">
 
@@ -102,48 +115,68 @@
 
       <!-- Settings Page -->
       <div id="page-settings" class="hidden space-y-8">
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <h2 class="text-3xl font-bold text-purple-800">Settings</h2>
+          <div class="flex items-center gap-3">
+            <button id="btn-reset-settings" class="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">Reset</button>
+            <button id="btn-save-settings" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save Settings</button>
+          </div>
         </div>
-        <div class="bg-white rounded-2xl shadow-lg p-6 max-w-2xl space-y-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="font-semibold">Dark mode</h3>
-              <p class="text-sm text-gray-600">Toggle application dark appearance</p>
+
+        <div class="bg-white rounded-2xl shadow-2xl p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Left: Controls -->
+          <div class="md:col-span-2 space-y-6">
+            <div class="flex items-center justify-between p-4 rounded-lg border border-gray-100 hover:shadow-md transition">
+              <div>
+                <h3 class="font-semibold text-lg">Dark mode</h3>
+                <p class="text-sm text-gray-500">Toggle application dark appearance for comfortable viewing</p>
+              </div>
+              <div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input id="toggle-dark" type="checkbox" class="sr-only" />
+                  <div class="w-12 h-6 bg-gray-200 rounded-full shadow-inner transition-colors" aria-hidden></div>
+                  <span class="absolute left-0 top-0 w-6 h-6 bg-white rounded-full shadow transform transition-transform" style="transform: translateX(0);"></span>
+                </label>
+              </div>
             </div>
-            <label class="inline-flex items-center">
-              <input id="toggle-dark" type="checkbox" class="form-checkbox h-5 w-5 text-purple-600" />
-            </label>
+
+            <div class="flex items-center justify-between p-4 rounded-lg border border-gray-100 hover:shadow-md transition">
+              <div>
+                <h3 class="font-semibold text-lg">Require Login</h3>
+                <p class="text-sm text-gray-500">Only authenticated users can access the system</p>
+              </div>
+              <div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input id="toggle-auth" type="checkbox" class="sr-only" />
+                  <div class="w-12 h-6 bg-gray-200 rounded-full shadow-inner transition-colors" aria-hidden></div>
+                  <span class="absolute left-0 top-0 w-6 h-6 bg-white rounded-full shadow transform transition-transform" style="transform: translateX(0);"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-lg border border-gray-100">
+              <h3 class="font-semibold text-lg">About</h3>
+              <p class="text-sm text-gray-500 mt-2">Configure system-wide settings like appearance and authentication. Changes auto-save, use Save to ensure persistence or Reset to restore defaults.</p>
+            </div>
           </div>
 
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="font-semibold">Require Login</h3>
-              <p class="text-sm text-gray-600">Only authenticated users can use the system</p>
+          <!-- Right: Overview & Actions -->
+          <div class="space-y-4">
+            <div class="bg-gradient-to-br from-purple-50 to-white p-4 rounded-lg shadow-sm border border-purple-50">
+              <p class="text-sm text-gray-600">Total Items</p>
+              <p id="settings-total-items" class="text-3xl font-bold text-purple-700 mt-2">0</p>
             </div>
-            <label class="inline-flex items-center">
-              <input id="toggle-auth" type="checkbox" class="form-checkbox h-5 w-5 text-purple-600" checked />
-            </label>
-          </div>
 
-          <div>
-            <h3 class="font-semibold">Stock Overview</h3>
-            <p class="text-sm text-gray-600">Quick view of stock levels</p>
-            <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <p class="text-sm text-gray-600">Total Items</p>
-                <p id="settings-total-items" class="text-2xl font-bold">0</p>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <p class="text-sm text-gray-600">Low Stock Items (&lt;10)</p>
-                <p id="settings-low-stock" class="text-2xl font-bold">0</p>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <p class="text-sm text-gray-600">Export Reports</p>
-                <div class="mt-2 flex gap-2">
-                  <button id="export-daily" class="px-3 py-2 bg-purple-600 text-white rounded-lg">Export Daily CSV</button>
-                  <button id="export-monthly" class="px-3 py-2 border rounded-lg">Export Monthly CSV</button>
-                </div>
+            <div class="bg-gradient-to-br from-blue-50 to-white p-4 rounded-lg shadow-sm border border-blue-50">
+              <p class="text-sm text-gray-600">Low Stock (&lt;10)</p>
+              <p id="settings-low-stock" class="text-3xl font-bold text-blue-700 mt-2">0</p>
+            </div>
+
+            <div class="p-4 rounded-lg border border-gray-100 bg-white">
+              <p class="text-sm text-gray-600 mb-2">Export Reports</p>
+              <div class="flex gap-2">
+                <button id="export-daily" class="flex-1 px-4 py-3 bg-purple-600 text-white rounded-lg shadow">Export Daily CSV</button>
+                <button id="export-monthly" class="flex-1 px-4 py-3 border rounded-lg">Export Monthly CSV</button>
               </div>
             </div>
           </div>
@@ -547,19 +580,66 @@
 
     function renderSettingsPage(){
       const s = loadSettings();
-      document.getElementById('toggle-dark').checked = !!s.dark;
-      document.getElementById('toggle-auth').checked = s.requireAuth !== false;
+      const darkEl = document.getElementById('toggle-dark');
+      const authEl = document.getElementById('toggle-auth');
+      darkEl.checked = !!s.dark;
+      authEl.checked = s.requireAuth !== false;
+      // update visual switches
+      setSwitchVisual(darkEl);
+      setSwitchVisual(authEl);
       // stock overview
       document.getElementById('settings-total-items').textContent = items.reduce((sum,i)=>sum + i.quantity,0);
       document.getElementById('settings-low-stock').textContent = items.filter(i=>i.quantity<10).length;
     }
 
+    function setSwitchVisual(chk){
+      if(!chk) return;
+      const track = chk.nextElementSibling; // the track div
+      const knob = track ? track.nextElementSibling : null; // the knob span
+      if(chk.checked){
+        if(track) track.classList.remove('bg-gray-200'); track && track.classList.add('bg-purple-600');
+        if(knob) knob.style.transform = 'translateX(160%)';
+      } else {
+        if(track) track.classList.remove('bg-purple-600'); track && track.classList.add('bg-gray-200');
+        if(knob) knob.style.transform = 'translateX(0)';
+      }
+    }
+
     document.getElementById('toggle-dark').addEventListener('change', (e)=>{
       const s = loadSettings(); s.dark = !!e.target.checked; saveSettings(s); applyDarkMode(s.dark);
+      setSwitchVisual(e.target);
     });
 
     document.getElementById('toggle-auth').addEventListener('change', (e)=>{
       const s = loadSettings(); s.requireAuth = !!e.target.checked; saveSettings(s);
+      setSwitchVisual(e.target);
+    });
+
+    // Save / Reset buttons and toast
+    function showToast(msg){
+      const t = document.createElement('div');
+      t.className = 'fixed bottom-6 right-6 bg-black text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(()=>{ t.style.opacity = '0'; t.style.transform = 'translateY(10px)'; setTimeout(()=>t.remove(),300); }, 1800);
+    }
+
+    document.getElementById('btn-save-settings').addEventListener('click', ()=>{
+      const s = loadSettings();
+      s.dark = !!document.getElementById('toggle-dark').checked;
+      s.requireAuth = !!document.getElementById('toggle-auth').checked;
+      saveSettings(s);
+      applyDarkMode(s.dark);
+      showToast('Settings saved');
+    });
+
+    document.getElementById('btn-reset-settings').addEventListener('click', ()=>{
+      if(!confirm('Reset settings to defaults?')) return;
+      const defaults = {dark:false, requireAuth:true};
+      saveSettings(defaults);
+      renderSettingsPage();
+      applyDarkMode(false);
+      showToast('Settings reset to defaults');
     });
 
     function applyDarkMode(enabled){

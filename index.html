@@ -212,7 +212,7 @@
             storage.setItem('inventory_token', token);
 
             showMessage('Login successful! Redirecting...', 'success');
-            setTimeout(() => window.location.href = '/pages/dashboard_sec.html', 800);
+            setTimeout(() => window.location.href = 'pages/dashboard_sec.html', 800);
         });
 
         // ==================== REGISTER ====================
@@ -253,11 +253,20 @@
             users.push(newUser);
             saveUsers(users);
 
-            showMessage('Account created successfully! You can now sign in.', 'success');
+            // Success - store session
+            const session = {
+                username: newUser.username,
+                name: newUser.name,
+                email: newUser.email,
+                loginTime: Date.now()
+            };
+            const token = btoa(JSON.stringify(session) + '::' + Date.now());
 
-            // Auto-fill login form & switch to login
-            document.getElementById('login-identifier').value = username;
-            switchToLogin();
+            localStorage.setItem('inventory_user', JSON.stringify(session));
+            localStorage.setItem('inventory_token', token);
+
+            showMessage('Account created successfully! Redirecting to dashboard...', 'success');
+            setTimeout(() => window.location.href = 'pages/dashboard_sec.html', 800);
         });
 
         // ==================== FORGOT PASSWORD ====================
@@ -299,7 +308,7 @@
 
         // Auto-redirect if already logged in
         if (localStorage.getItem('inventory_token') || sessionStorage.getItem('inventory_token')) {
-            window.location.href = '/pages/dashboard_sec.html';
+            window.location.href = 'pages/dashboard_sec.html';
         }
     </script>
 </body>

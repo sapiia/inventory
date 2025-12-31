@@ -136,14 +136,52 @@
             setTimeout(() => el.innerHTML = '', 4500);
         };
 
-        // ==================== LOCALSTORAGE USERS ====================
+        // ==================== USER STORAGE (localStorage with memory fallback) ====================
+        let _memoryUsers = [];
+
+        const localStorageAvailable = () => {
+            try {
+                const k = '__storage_test__';
+                localStorage.setItem(k, k);
+                localStorage.removeItem(k);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        };
+
         const loadUsers = () => {
-            try { return JSON.parse(localStorage.getItem('inventory_users')) || []; }
-            catch { return []; }
+            if (localStorageAvailable()) {
+                try {
+                    const raw = localStorage.getItem('inventory_users');
+                    const parsed = raw ? JSON.parse(raw) : [];
+                    if (!Array.isArray(parsed)) return [];
+                    // sanitize entries to objects
+                    return parsed.map(u => (u && typeof u === 'object') ? u : {}).filter(Boolean);
+                } catch (err) {
+                    console.warn('Failed to parse stored users, falling back to memory', err);
+                    return _memoryUsers.slice();
+                }
+            }
+            return _memoryUsers.slice();
         };
 
         const saveUsers = (users) => {
-            localStorage.setItem('inventory_users', JSON.stringify(users));
+            if (!Array.isArray(users)) users = [];
+            _memoryUsers = users.slice();
+            if (localStorageAvailable()) {
+                try {
+                    localStorage.setItem('inventory_users', JSON.stringify(users));
+                    return true;
+                } catch (err) {
+                    console.error('Failed to save users to localStorage', err);
+                    showMessage('Unable to save account: please enable storage or try a different browser', 'error');
+                    return false;
+                }
+            }
+            // localStorage not available, but memory updated
+            showMessage('Account stored for this session (storage unavailable).', 'info');
+            return true;
         };
 
         // ==================== FORM TOGGLE ====================
@@ -232,7 +270,7 @@
 
             const users = loadUsers();
 
-            if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+            if (users.some(u => u.username && u.username.toLowerCase() === username.toLowerCase())) {
                 showMessage('Username already taken', 'error');
                 return;
             }
@@ -251,13 +289,17 @@
             };
 
             users.push(newUser);
-            saveUsers(users);
+            const saved = saveUsers(users);
+            if (!saved) return; // saveUsers will show message on failure
 
             showMessage('Account created successfully! You can now sign in.', 'success');
 
-            // Auto-fill login form & switch to login
+            // Reset register form, auto-fill login & switch to login
+            registerForm.reset();
             document.getElementById('login-identifier').value = username;
             switchToLogin();
+            // focus the password field so user can quickly login
+            setTimeout(() => document.getElementById('login-password').focus(), 200);
         });
 
         // ==================== FORGOT PASSWORD ====================

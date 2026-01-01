@@ -88,14 +88,51 @@
         document.documentElement.classList.remove('app-dark');
       }
     }
+    // Inject a small set of global styles to smooth transitions and style the active sidebar
+    function injectGlobalStyles(){
+      const gid = 'app-global-styles';
+      if(document.getElementById(gid)) return;
+      const s = document.createElement('style'); s.id = gid;
+      s.textContent = `
+        :root { --app-transition: 220ms; }
+        body, main, aside, .bg-white, .rounded-2xl, .rounded-lg { transition: background-color var(--app-transition) ease, color var(--app-transition) ease, border-color var(--app-transition) ease, box-shadow var(--app-transition) ease; }
+        .sidebar-active { background: rgba(120, 70, 240, 0.06) !important; color: #c084fc !important; }
+        .sidebar-active i { color: #c084fc !important; }
+        .app-dark .sidebar-active { background: linear-gradient(90deg,#2b0a3f,#5b21b6) !important; color: #f3e8ff !important; }
+        a[aria-current="page"] { font-weight:600; }
+      `;
+      document.head.appendChild(s);
+    }
+
+    // Mark the current navigation item active based on the current file name
+    function markActiveNav(){
+      try{
+        const anchors = document.querySelectorAll('aside a');
+        if(!anchors || anchors.length===0) return;
+        const path = window.location.pathname.split('/').pop() || 'dashboard.html';
+        anchors.forEach(a=>{
+          const href = (a.getAttribute('href')||'').split('/').pop();
+          if(href === path || (path === '' && href === 'index.html')){
+            a.classList.add('sidebar-active');
+            a.setAttribute('aria-current','page');
+          } else {
+            a.classList.remove('sidebar-active');
+            a.removeAttribute('aria-current');
+          }
+        });
+      }catch(e){/* ignore */}
+    }
+
     // Apply persisted dark setting immediately so all pages show the correct theme
-    try{ const initial = loadSettings(); applyDarkMode(!!initial.dark); }catch(e){ /* ignore */ }
+    try{ injectGlobalStyles(); const initial = loadSettings(); applyDarkMode(!!initial.dark); }catch(e){ /* ignore */ }
     function renderSettingsPage(){ const s=loadSettings(); const darkEl=document.getElementById('toggle-dark'); const authEl=document.getElementById('toggle-auth'); if(darkEl) darkEl.checked=!!s.dark; if(authEl) authEl.checked = s.requireAuth !== false; setSwitchVisual(darkEl); setSwitchVisual(authEl); const total=document.getElementById('settings-total-items'); if(total){ const items = JSON.parse(localStorage.getItem('inventoryItems')||'[]'); total.textContent = items.reduce((sum,i)=>sum + (i.quantity||0),0); } const low=document.getElementById('settings-low-stock'); if(low){ const items = JSON.parse(localStorage.getItem('inventoryItems')||'[]'); low.textContent = items.filter(i=>i.quantity<10).length; } }
     const darkEl = document.getElementById('toggle-dark'); if(darkEl) darkEl.addEventListener('change',(e)=>{ const s=loadSettings(); s.dark=!!e.target.checked; saveSettings(s); applyDarkMode(s.dark); setSwitchVisual(e.target); });
     const authEl = document.getElementById('toggle-auth'); if(authEl) authEl.addEventListener('change',(e)=>{ const s=loadSettings(); s.requireAuth=!!e.target.checked; saveSettings(s); setSwitchVisual(e.target); });
     const saveBtn = document.getElementById('btn-save-settings'); if(saveBtn) saveBtn.addEventListener('click', ()=>{ const s=loadSettings(); s.dark = !!(document.getElementById('toggle-dark') && document.getElementById('toggle-dark').checked); s.requireAuth = !!(document.getElementById('toggle-auth') && document.getElementById('toggle-auth').checked); saveSettings(s); applyDarkMode(s.dark); alert('Settings saved'); });
     const resetBtn = document.getElementById('btn-reset-settings'); if(resetBtn) resetBtn.addEventListener('click', ()=>{ if(!confirm('Reset settings to defaults?')) return; const defaults={dark:false,requireAuth:true}; saveSettings(defaults); renderSettingsPage(); applyDarkMode(false); alert('Settings reset'); });
     renderUsersPage(); renderSettingsPage(); renderItemsPage();
+    // apply active nav highlight after rendering
+    markActiveNav();
   });
 
   // --- Items rendering ---

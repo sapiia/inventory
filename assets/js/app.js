@@ -70,14 +70,17 @@
           document.head.appendChild(styleEl);
         }
         styleEl.textContent = `
-          /* Simple dark-mode overrides for common layout elements */
-          .app-dark body, .app-dark .bg-white { background-color: #0b1220 !important; color: #e6eef8 !important; }
-          .app-dark .bg-gradient-to-b, .app-dark .bg-gradient-to-br { background: linear-gradient(180deg,#0b1220 0%,#0f1724 100%) !important; }
-          .app-dark .text-gray-600, .app-dark .text-gray-500, .app-dark .text-gray-700 { color: #cbd5e1 !important; }
-          .app-dark .bg-gray-50, .app-dark .bg-gray-100 { background-color: #071025 !important; }
-          .app-dark .shadow-lg, .app-dark .shadow-2xl { box-shadow: none !important; }
-          .app-dark aside { background: linear-gradient(180deg,#0f1724,#061323) !important; }
-          .app-dark a { color: inherit !important; }
+          /* Stronger dark-mode overrides for common layout elements */
+          .app-dark body, .app-dark main { background-color: #071025 !important; color: #e6eef8 !important; }
+          .app-dark .bg-white, .app-dark .bg-gray-50, .app-dark .bg-gray-100, .app-dark .bg-purple-50, .app-dark .bg-blue-50 { background-color: transparent !important; color: #cbd5e1 !important; }
+          .app-dark .bg-gradient-to-b, .app-dark .bg-gradient-to-br { background: linear-gradient(180deg,#071425 0%,#071025 100%) !important; }
+          .app-dark aside { background: linear-gradient(180deg,#0b1220,#061323) !important; }
+          .app-dark .text-gray-600, .app-dark .text-gray-500, .app-dark .text-gray-700, .app-dark .text-gray-800 { color: #9fb0c8 !important; }
+          .app-dark .border, .app-dark .border-gray-100, .app-dark .border-gray-200, .app-dark .border-purple-50 { border-color: rgba(255,255,255,0.06) !important; }
+          .app-dark .shadow, .app-dark .shadow-lg, .app-dark .shadow-2xl { box-shadow: none !important; }
+          .app-dark input, .app-dark textarea, .app-dark select, .app-dark button { background-color: transparent !important; color: #e6eef8 !important; border-color: rgba(255,255,255,0.06) !important; }
+          .app-dark a { color: #c084fc !important; }
+          .app-dark .text-purple-700, .app-dark .text-blue-700 { color: #8b5cf6 !important; }
         `;
         document.documentElement.classList.add('app-dark');
       } else {
@@ -85,6 +88,8 @@
         document.documentElement.classList.remove('app-dark');
       }
     }
+    // Apply persisted dark setting immediately so all pages show the correct theme
+    try{ const initial = loadSettings(); applyDarkMode(!!initial.dark); }catch(e){ /* ignore */ }
     function renderSettingsPage(){ const s=loadSettings(); const darkEl=document.getElementById('toggle-dark'); const authEl=document.getElementById('toggle-auth'); if(darkEl) darkEl.checked=!!s.dark; if(authEl) authEl.checked = s.requireAuth !== false; setSwitchVisual(darkEl); setSwitchVisual(authEl); const total=document.getElementById('settings-total-items'); if(total){ const items = JSON.parse(localStorage.getItem('inventoryItems')||'[]'); total.textContent = items.reduce((sum,i)=>sum + (i.quantity||0),0); } const low=document.getElementById('settings-low-stock'); if(low){ const items = JSON.parse(localStorage.getItem('inventoryItems')||'[]'); low.textContent = items.filter(i=>i.quantity<10).length; } }
     const darkEl = document.getElementById('toggle-dark'); if(darkEl) darkEl.addEventListener('change',(e)=>{ const s=loadSettings(); s.dark=!!e.target.checked; saveSettings(s); applyDarkMode(s.dark); setSwitchVisual(e.target); });
     const authEl = document.getElementById('toggle-auth'); if(authEl) authEl.addEventListener('change',(e)=>{ const s=loadSettings(); s.requireAuth=!!e.target.checked; saveSettings(s); setSwitchVisual(e.target); });

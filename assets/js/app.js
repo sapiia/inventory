@@ -31,6 +31,43 @@
     });
   }
 
+  // View item modal
+  function openViewItemModal(item){
+    const modal = document.getElementById('item-view-modal'); if(!modal) return;
+    const content = document.getElementById('view-item-content');
+    if(content){
+      content.innerHTML = `
+      <div>
+        <p class="text-sm text-gray-500">ID</p>
+        <p class="font-semibold text-gray-800">${item.sku||item.id||'N/A'}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Name</p>
+        <p class="font-semibold">${item.name||''}</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <p class="text-sm text-gray-500">Quantity</p>
+          <p class="font-semibold">${item.quantity||0}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Price</p>
+          <p class="font-semibold">$${(parseFloat(item.price)||0).toFixed(2)}</p>
+        </div>
+      </div>
+      `;
+    }
+    const editBtn = document.getElementById('view-item-edit');
+    const delBtn = document.getElementById('view-item-delete');
+    const closeBtn = document.getElementById('view-item-close');
+    const closeFn = ()=>{ modal.classList.add('hidden'); };
+    if(closeBtn) closeBtn.onclick = closeFn;
+    if(editBtn) editBtn.onclick = ()=>{ closeFn(); openItemModal(item); };
+    if(delBtn) delBtn.onclick = ()=>{ if(!confirm('Delete item "'+(item.name||item.sku||item.id)+'"?')) return; let list = loadItems(); list = list.filter(x=> (x.sku||x.id) !== (item.sku||item.id)); saveItems(list); renderItemsPage(); closeFn(); };
+    modal.classList.remove('hidden');
+  }
+  function closeViewItemModal(){ const modal = document.getElementById('item-view-modal'); if(modal) modal.classList.add('hidden'); }
+
   // --- Member modal ---
   function openMemberModal(member){
     const modal = document.getElementById('user-modal'); if(!modal) return;
@@ -158,32 +195,35 @@
     const items = loadItems(); container.innerHTML = '';
     items.forEach(it=>{
       const card = document.createElement('div');
-      card.className = 'bg-white p-4 rounded-lg shadow hover:shadow-md transition';
+      card.className = 'bg-white p-5 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between';
 
-      const title = document.createElement('h4'); title.className='text-lg font-semibold'; title.textContent = it.name || '';
-      const idp = document.createElement('p'); idp.className='text-sm text-gray-500 mt-1'; idp.textContent = 'ID: ' + (it.sku || it.id || 'N/A');
-      const qty = document.createElement('p'); qty.className='text-sm mt-3'; qty.innerHTML = '<strong>Quantity:</strong> ' + (it.quantity || 0);
-      const price = document.createElement('p'); price.className='text-sm'; price.innerHTML = '<strong>Price:</strong> $' + (it.price || 0);
+      const head = document.createElement('div');
+      const title = document.createElement('h4'); title.className='text-lg font-semibold text-gray-800'; title.textContent = it.name || '';
+      const idp = document.createElement('p'); idp.className='text-xs text-gray-500 mt-1'; idp.textContent = 'ID: ' + (it.sku || it.id || 'N/A');
+      head.appendChild(title); head.appendChild(idp);
 
-      const actions = document.createElement('div'); actions.className = 'mt-4 flex gap-2';
-      const saveBtn = document.createElement('button'); saveBtn.className='px-3 py-1 bg-green-600 text-white rounded'; saveBtn.textContent = 'Save';
-      const unsaveBtn = document.createElement('button'); unsaveBtn.className='px-3 py-1 bg-gray-200 rounded'; unsaveBtn.textContent = 'Unsave';
+      const body = document.createElement('div'); body.className = 'mt-3';
+      const qty = document.createElement('p'); qty.className='text-sm'; qty.innerHTML = '<strong>Quantity:</strong> ' + (it.quantity || 0);
+      const price = document.createElement('p'); price.className='text-sm mt-1'; price.innerHTML = '<strong>Price:</strong> $' + (parseFloat(it.price)||0).toFixed(2);
+      body.appendChild(qty); body.appendChild(price);
 
-      // Visual state
-      if(it._saved){ saveBtn.classList.add('opacity-60'); unsaveBtn.classList.remove('opacity-60'); }
-      else { unsaveBtn.classList.add('opacity-60'); saveBtn.classList.remove('opacity-60'); }
+      const footer = document.createElement('div'); footer.className = 'mt-4 flex items-center justify-between';
+      const left = document.createElement('div'); left.className='flex items-center gap-2';
+      const viewBtn = document.createElement('button'); viewBtn.className='px-3 py-1 border rounded text-sm bg-white'; viewBtn.title='View'; viewBtn.innerHTML='<i class="fas fa-eye"></i>';
+      const editBtn = document.createElement('button'); editBtn.className='px-3 py-1 bg-purple-600 text-white rounded text-sm'; editBtn.title='Edit'; editBtn.innerHTML='<i class="fas fa-pen"></i>';
+      const delBtn = document.createElement('button'); delBtn.className='px-3 py-1 border rounded text-sm btn-secondary'; delBtn.title='Delete'; delBtn.innerHTML='<i class="fas fa-trash text-red-600"></i>';
+      left.appendChild(viewBtn); left.appendChild(editBtn);
 
-      saveBtn.addEventListener('click', ()=>{
-        const list = loadItems(); const idx = list.findIndex(x=> (x.sku||x.id) === (it.sku||it.id)); if(idx>-1){ list[idx]._saved = true; } else { it._saved = true; list.push(it); }
-        saveItems(list); renderItemsPage();
+      footer.appendChild(left); footer.appendChild(delBtn);
+
+      viewBtn.addEventListener('click', ()=> openViewItemModal(it));
+      editBtn.addEventListener('click', ()=> openItemModal(it));
+      delBtn.addEventListener('click', ()=>{
+        if(!confirm('Delete item "'+(it.name||it.sku||it.id)+'"?')) return;
+        let list = loadItems(); list = list.filter(x=> (x.sku||x.id) !== (it.sku||it.id)); saveItems(list); renderItemsPage();
       });
-      unsaveBtn.addEventListener('click', ()=>{
-        const list = loadItems(); const idx = list.findIndex(x=> (x.sku||x.id) === (it.sku||it.id)); if(idx>-1){ list[idx]._saved = false; saveItems(list); }
-        renderItemsPage();
-      });
 
-      actions.appendChild(saveBtn); actions.appendChild(unsaveBtn);
-      card.appendChild(title); card.appendChild(idp); card.appendChild(qty); card.appendChild(price); card.appendChild(actions);
+      card.appendChild(head); card.appendChild(body); card.appendChild(footer);
       container.appendChild(card);
     });
   }

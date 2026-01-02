@@ -41,7 +41,7 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-2xl overflow-hidden p-6">
-          <div id="items-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div id="items-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             <!-- item cards injected by app.js -->
           </div>
         </div>
@@ -82,6 +82,22 @@
           <button type="submit" class="px-4 py-2 btn-primary">Save Item</button>
         </div>
       </form>
+    </div>
+  </div>
+  <!-- View Item Modal -->
+  <div id="item-view-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 animate-slideUp">
+      <div class="flex items-center justify-between mb-4">
+        <h3 id="view-item-title" class="text-lg font-semibold text-purple-800">Item details</h3>
+        <button id="view-item-close" class="text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="view-item-content" class="space-y-3 text-gray-700">
+        <!-- populated by JS -->
+      </div>
+      <div class="mt-5 flex justify-end gap-3">
+        <button id="view-item-edit" class="px-3 py-2 bg-purple-600 text-white rounded-lg">Edit</button>
+        <button id="view-item-delete" class="px-3 py-2 border rounded-lg btn-secondary">Delete</button>
+      </div>
     </div>
   </div>
 </body>

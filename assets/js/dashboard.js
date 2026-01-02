@@ -55,4 +55,8 @@ function initCharts() {
 // Initialize on load
 window.addEventListener('DOMContentLoaded', () => {
     initCharts();
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> channyven

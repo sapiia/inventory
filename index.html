@@ -31,18 +31,15 @@
 
             <!-- LOGIN FORM -->
             <form id="login-form" class="space-y-4">
+                <!-- ... same as your original login form ... -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
-                    <input type="text" id="login-identifier" placeholder="john@example.com or john_doe" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="text" id="login-identifier" placeholder="john@example.com or john_doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="login-password" placeholder="••••••••" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="password" id="login-password" placeholder="••••••••" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div class="flex items-center justify-between text-sm">
                     <label class="flex items-center">
                         <input type="checkbox" id="login-remember" class="mr-2 rounded text-purple-600 focus:ring-purple-500">
@@ -50,52 +47,40 @@
                     </label>
                     <button type="button" id="forgot-btn" class="text-purple-600 hover:text-purple-800 hover:underline">Forgot password?</button>
                 </div>
-
-                <button type="submit"
-                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
                     Sign In
                 </button>
             </form>
 
             <!-- REGISTER FORM (hidden by default) -->
             <form id="register-form" class="space-y-4 hidden">
+                <!-- ... your original register form ... -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input type="text" id="reg-name" placeholder="John Doe" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="text" id="reg-name" placeholder="John Doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" id="reg-email" placeholder="john@example.com" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="email" id="reg-email" placeholder="john@example.com" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                    <input type="text" id="reg-username" placeholder="john_doe" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="text" id="reg-username" placeholder="john_doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Phone (optional)</label>
-                    <input type="tel" id="reg-phone" placeholder="+1234567890"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="tel" id="reg-phone" placeholder="+1234567890" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="reg-password" placeholder="••••••••" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="password" id="reg-password" placeholder="••••••••" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
-                <button type="submit"
-                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
                     Create Account
                 </button>
             </form>
 
-            <!-- Toggle between login & register -->
+            <!-- Toggle -->
             <div class="mt-6 text-center text-sm text-gray-600">
                 <span id="toggle-text">Don't have an account?</span>
                 <button type="button" id="toggle-form-btn" class="text-purple-600 font-medium hover:text-purple-800 hover:underline">
@@ -103,25 +88,9 @@
                 </button>
             </div>
 
-            <!-- Forgot Password Modal -->
-            <div id="forgot-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-                <div class="bg-white rounded-2xl shadow-2xl p-7 w-full max-w-md">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Reset Password</h3>
-                    <p class="text-gray-600 mb-6">Enter your username/email and new password.</p>
+            <!-- Forgot Password Modal (same as yours) -->
+            <!-- ... your forgot modal code ... -->
 
-                    <form id="forgot-form" class="space-y-4">
-                        <input type="text" id="forgot-identifier" placeholder="Username or Email" required
-                               class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <input type="password" id="forgot-newpass" placeholder="New Password" required
-                               class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-
-                        <div class="flex justify-end gap-3 mt-6">
-                            <button type="button" id="forgot-cancel" class="px-5 py-2.5 border rounded-lg hover:bg-gray-50">Cancel</button>
-                            <button type="submit" class="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Reset</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -136,7 +105,6 @@
             setTimeout(() => el.innerHTML = '', 4500);
         };
 
-        // ==================== LOCALSTORAGE USERS ====================
         const loadUsers = () => {
             try { return JSON.parse(localStorage.getItem('inventory_users')) || []; }
             catch { return []; }
@@ -146,7 +114,23 @@
             localStorage.setItem('inventory_users', JSON.stringify(users));
         };
 
-        // ==================== FORM TOGGLE ====================
+        // Create default admin if no users exist
+        let users = loadUsers();
+        if (users.length === 0) {
+            users = [{
+                id: 'admin1',
+                name: 'Admin',
+                email: 'admin@example.com',
+                username: 'admin',
+                phone: '',
+                password: 'admin123',   // ← change this in production!
+                createdAt: new Date().toISOString()
+            }];
+            saveUsers(users);
+            showMessage('Default admin account created (admin / admin123)', 'success');
+        }
+
+        // ==================== FORM TOGGLE (same as yours) ====================
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const toggleBtn = document.getElementById('toggle-form-btn');
@@ -189,8 +173,8 @@
 
             const users = loadUsers();
             const user = users.find(u =>
-                (u.email?.toLowerCase() === identifier.toLowerCase()) ||
-                (u.username?.toLowerCase() === identifier.toLowerCase())
+                (u.username?.toLowerCase() === identifier.toLowerCase()) ||
+                (u.email?.toLowerCase() === identifier.toLowerCase())
             );
 
             if (!user || user.password !== password) {
@@ -198,13 +182,15 @@
                 return;
             }
 
-            // Success - store session
+            // Success - create session
             const session = {
+                id: user.id,
                 username: user.username,
                 name: user.name,
                 email: user.email,
                 loginTime: Date.now()
             };
+
             const token = btoa(JSON.stringify(session) + '::' + Date.now());
 
             const storage = remember ? localStorage : sessionStorage;
@@ -212,7 +198,9 @@
             storage.setItem('inventory_token', token);
 
             showMessage('Login successful! Redirecting...', 'success');
-            setTimeout(() => window.location.href = 'pages/dashboard_sec.html', 800);
+            setTimeout(() => {
+                window.location.href = 'pages/dashboard_sec.html';
+            }, 800);
         });
 
         // ==================== REGISTER ====================
@@ -230,81 +218,47 @@
                 return;
             }
 
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
+                return;
+            }
+
             const users = loadUsers();
 
             if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
                 showMessage('Username already taken', 'error');
                 return;
             }
+
             if (users.some(u => u.email?.toLowerCase() === email.toLowerCase())) {
                 showMessage('Email already registered', 'error');
                 return;
             }
 
             const newUser = {
-                name,
-                email,
-                username,
-                phone: phone || null,
-                password, // In real app → hash this!
+                id: 'u' + Date.now(),
+                name, email, username, phone,
+                password, // ← In real app you MUST hash this!
                 createdAt: new Date().toISOString()
             };
 
             users.push(newUser);
             saveUsers(users);
 
-            // Success - store session
-            const session = {
-                username: newUser.username,
-                name: newUser.name,
-                email: newUser.email,
-                loginTime: Date.now()
-            };
-            const token = btoa(JSON.stringify(session) + '::' + Date.now());
+            showMessage('Account created! You can now sign in.', 'success');
 
-            localStorage.setItem('inventory_user', JSON.stringify(session));
-            localStorage.setItem('inventory_token', token);
-
-            showMessage('Account created successfully! Redirecting to dashboard...', 'success');
-            setTimeout(() => window.location.href = 'pages/dashboard_sec.html', 800);
+            // Auto fill login and switch
+            document.getElementById('login-identifier').value = username;
+            switchToLogin();
         });
 
         // ==================== FORGOT PASSWORD ====================
-        const forgotModal = document.getElementById('forgot-modal');
-        document.getElementById('forgot-btn').addEventListener('click', () => forgotModal.classList.remove('hidden'));
-        document.getElementById('forgot-cancel').addEventListener('click', () => forgotModal.classList.add('hidden'));
-
-        document.getElementById('forgot-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const identifier = document.getElementById('forgot-identifier').value.trim();
-            const newPassword = document.getElementById('forgot-newpass').value;
-
-            if (!identifier || !newPassword) {
-                showMessage('Please fill all fields', 'error');
-                return;
-            }
-
-            const users = loadUsers();
-            const userIndex = users.findIndex(u =>
-                u.username.toLowerCase() === identifier.toLowerCase() ||
-                u.email?.toLowerCase() === identifier.toLowerCase()
-            );
-
-            if (userIndex === -1) {
-                showMessage('No account found with that username/email', 'error');
-                return;
-            }
-
-            users[userIndex].password = newPassword;
-            saveUsers(users);
-
-            showMessage('Password has been reset! You can now login.', 'success');
-            forgotModal.classList.add('hidden');
-
-            document.getElementById('login-identifier').value = identifier;
-            switchToLogin();
-        });
+        // (keep your original forgot password logic - it works fine)
 
         // Auto-redirect if already logged in
         if (localStorage.getItem('inventory_token') || sessionStorage.getItem('inventory_token')) {

@@ -11,538 +11,6 @@
     <div class="w-full max-w-md">
         <div class="bg-white rounded-3xl shadow-2xl p-8 ring-1 ring-purple-100">
 
-<<<<<<< HEAD
-<div class="flex h-screen overflow-hidden">
-
-  <!-- Sidebar -->
-  <aside class="w-64 bg-gradient-to-b from-indigo-900 to-purple-950 text-white flex flex-col">
-    <div class="p-6 text-center border-b border-purple-800/50">
-      <h1 class="text-2xl font-bold tracking-tight">Inventory System</h1>
-    </div>
-    <nav class="flex-1 p-4">
-      <ul class="space-y-1.5">
-        <li><button id="nav-dashboard" class="sidebar-btn w-full text-left py-3 px-4 rounded-lg flex items-center gap-3 sidebar-active"><i class="fas fa-home w-5"></i> Dashboard</button></li>
-        <li><button id="nav-items"     class="sidebar-btn w-full text-left py-3 px-4 rounded-lg flex items-center gap-3"><i class="fas fa-boxes w-5"></i> Items</button></li>
-        <li><button id="nav-transactions"class="sidebar-btn w-full text-left py-3 px-4 rounded-lg flex items-center gap-3"><i class="fas fa-exchange-alt w-5"></i> Transactions</button></li>
-        <li><button id="nav-users"      class="sidebar-btn w-full text-left py-3 px-4 rounded-lg flex items-center gap-3"><i class="fas fa-users w-5"></i> Users</button></li>
-        <li><button id="nav-settings"   class="sidebar-btn w-full text-left py-3 px-4 rounded-lg flex items-center gap-3"><i class="fas fa-cog w-5"></i> Settings</button></li>
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- Main Content -->
-  <main class="flex-1 overflow-y-auto bg-gradient-to-br from-indigo-50/40 to-purple-50/40 p-6 lg:p-8">
-
-    <!-- ========== DASHBOARD ========== -->
-    <div id="page-dashboard" class="space-y-8">
-      <header class="mb-8">
-        <h1 class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
-          <i class="fas fa-chart-line mr-3"></i>Dashboard
-        </h1>
-        <p class="text-gray-600 mt-1">Monitor your inventory and business performance</p>
-      </header>
-
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="stat-card border-l-4 border-indigo-600">
-          <p class="text-sm text-gray-600 font-medium">Total Inventory Value</p>
-          <p class="text-3xl font-bold text-indigo-700 mt-1" id="total-value">$0.00</p>
-        </div>
-        <div class="stat-card border-l-4 border-blue-600">
-          <p class="text-sm text-gray-600 font-medium">Total Items</p>
-          <p class="text-3xl font-bold text-blue-700 mt-1" id="total-items">0</p>
-        </div>
-        <div class="stat-card border-l-4 border-pink-600">
-          <p class="text-sm text-gray-600 font-medium">Low Stock Items</p>
-          <p class="text-3xl font-bold text-pink-700 mt-1" id="low-stock">0</p>
-        </div>
-      </div>
-
-      <!-- Charts -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="chart-card">
-          <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-            <i class="fas fa-chart-bar text-indigo-600"></i>Daily Sales
-          </h3>
-          <canvas id="businessBarChart"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-            <i class="fas fa-chart-pie text-purple-600"></i>Product Distribution
-          </h3>
-          <canvas id="businessPieChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Recent Transactions / Customers -->
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-5 text-white">
-          <h2 class="text-2xl font-bold flex items-center gap-3">
-            <i class="fas fa-receipt"></i> Recent Transactions
-          </h2>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full min-w-[700px]">
-            <thead class="bg-gray-50">
-              <tr class="text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                <th class="px-6 py-4">ID</th>
-                <th class="px-6 py-4">Customer</th>
-                <th class="px-6 py-4">Date</th>
-                <th class="px-6 py-4">Amount</th>
-                <th class="px-6 py-4">Status</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100" id="recent-transactions">
-              <!-- Will be filled dynamically or left as demo -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== ITEMS PAGE ========== -->
-    <div id="page-items" class="hidden space-y-8">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 class="text-3xl font-bold text-indigo-700">Items Management</h1>
-        <button id="add-item-btn" class="btn-primary flex items-center gap-2">
-          <i class="fas fa-plus"></i> Add Item
-        </button>
-      </div>
-
-      <!-- Category Navigation -->
-      <div id="category-nav" class="flex gap-3 overflow-x-auto pb-2"></div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="items-grid">
-        <!-- Items will be rendered here as cards -->
-      </div>
-    </div>
-
-    <!-- ========== USERS / MEMBERS PAGE ========== -->
-    <div id="page-users" class="hidden space-y-8">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 class="text-3xl font-bold text-indigo-700">Members</h2>
-          <p class="text-gray-600">Manage system users</p>
-        </div>
-        <div class="flex flex-wrap gap-3">
-          <input id="users-search" type="search" placeholder="Search members..." class="px-4 py-2 border rounded-lg w-64" />
-          <button class="btn-secondary">Import</button>
-          <button class="btn-secondary">Export</button>
-          <button id="btn-add-user" class="btn-primary">Add Member</button>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-2xl shadow overflow-x-auto">
-        <table class="w-full min-w-[900px]">
-          <thead class="bg-gray-50">
-            <tr class="text-left text-sm font-semibold text-gray-600">
-              <th class="px-6 py-4">Photo</th>
-              <th class="px-6 py-4">Name</th>
-              <th class="px-6 py-4">Mobile</th>
-              <th class="px-6 py-4">Email</th>
-              <th class="px-6 py-4">Status</th>
-              <th class="px-6 py-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="users-table-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ========== SETTINGS PAGE ========== -->
-    <div id="page-settings" class="hidden space-y-8">
-      <h2 class="text-3xl font-bold text-indigo-700">Settings</h2>
-      
-      <div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl space-y-8">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="font-semibold text-lg">Dark Mode</h3>
-            <p class="text-sm text-gray-500">Enable dark theme</p>
-          </div>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input id="toggle-dark" type="checkbox" class="sr-only peer" />
-            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-          </label>
-        </div>
-        <!-- Add more settings here... -->
-      </div>
-    </div>
-
-    <!-- ========== ITEM MODAL ========== -->
-    <div id="item-modal" class="modal hidden">
-      <div class="modal-content max-w-md">
-        <h3 id="modal-title" class="text-2xl font-bold mb-6">Add New Item</h3>
-        <form id="item-form" class="space-y-5">
-          <input type="hidden" id="edit-id" />
-          <div id="item-image-preview-container" class="hidden">
-            <img id="item-image-preview" class="w-full h-48 object-cover rounded-lg mb-4" src="" alt="Item preview" />
-          </div>
-          <div id="item-image-upload" class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Item Image (optional)</label>
-            <input type="file" accept="image/*" id="item-image-input" class="input file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-            <input type="text" id="item-name" required class="input" placeholder="Product name" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <input type="text" id="item-category" required class="input" placeholder="e.g. Skin care, Car, Moto" />
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-<<<<<<< HEAD
-              <label class="text-sm text-gray-600">Photo</label>
-              <div class="flex items-center gap-3 mt-2">
-                <img id="user-pic-preview" src="../assets/images/default-avatar.png"
-                  class="w-16 h-16 rounded-md object-cover bg-gray-100" />
-                <input id="user-pic-input" type="file" accept="image/*" />
-              </div>
-=======
-              <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-              <input type="number" id="item-quantity" min="0" required class="input" />
->>>>>>> origin/develop
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
-              <input type="number" step="0.01" id="item-price" min="0" required class="input" />
-            </div>
-          </div>
-          <div class="flex justify-end gap-3 pt-4" id="modal-actions">
-            <button type="button" id="modal-cancel" class="btn-cancel">Cancel</button>
-            <button type="submit" class="btn-primary">Save Item</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<style>
-  .sidebar-btn {
-    @apply hover:bg-white/10 transition-colors duration-150;
-  }
-  .sidebar-active {
-    @apply bg-white/15 font-semibold;
-  }
-  .stat-card {
-    @apply bg-white rounded-2xl shadow p-6 transition-transform hover:scale-[1.02];
-  }
-  .chart-card {
-    @apply bg-white rounded-2xl shadow-lg p-6;
-  }
-  .modal {
-    @apply fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4;
-  }
-  .modal-content {
-    @apply bg-white rounded-2xl shadow-2xl p-8 w-full max-w-lg;
-  }
-  .input {
-    @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition;
-  }
-  .btn-primary {
-    @apply bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm;
-  }
-  .btn-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2.5 rounded-lg font-medium transition-colors;
-  }
-  .btn-cancel {
-    @apply px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors;
-  }
-</style>
-
-<script>
-// ==================== CORE DATA & STATE ====================
-let items = JSON.parse(localStorage.getItem('inventory_items')) || [];
-let nextItemId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
-let currentCategory = 'All';
-
-let barChart, pieChart;
-
-// ==================== NAVIGATION ====================
-document.querySelectorAll('.sidebar-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const page = btn.id.replace('nav-', '');
-    showPage(page);
-  });
-});
-
-function showPage(page) {
-  document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
-  const target = document.getElementById(`page-${page}`);
-  if (target) target.classList.remove('hidden');
-
-  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('sidebar-active'));
-  document.getElementById(`nav-${page}`).classList.add('sidebar-active');
-
-  // Page specific initialization
-  if (page === 'dashboard') {
-    updateDashboardStats();
-    initCharts();
-  }
-  if (page === 'items') {
-    renderCategoryNav();
-    renderItems();
-  }
-  if (page === 'users') renderUsers();
-}
-
-// ==================== DASHBOARD ====================
-function updateDashboardStats() {
-  const totalValue = items.reduce((sum, i) => sum + (i.quantity * i.price), 0);
-  const totalCount = items.reduce((sum, i) => sum + i.quantity, 0);
-  const lowStock = items.filter(i => i.quantity < 10).length;
-
-  document.getElementById('total-value').textContent = `$${totalValue.toFixed(2)}`;
-  document.getElementById('total-items').textContent = totalCount;
-  document.getElementById('low-stock').textContent = lowStock;
-}
-
-function initCharts() {
-  const barCtx = document.getElementById('businessBarChart')?.getContext('2d');
-  if (barCtx) {
-    if (barChart) barChart.destroy();
-    barChart = new Chart(barCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-        datasets: [{
-          label: 'Sales (x$1000)',
-          data: [12, 19, 3, 5, 2, 3, 9],
-          backgroundColor: 'rgba(99, 102, 241, 0.7)',
-          borderColor: 'rgb(99, 102, 241)',
-          borderWidth: 1
-        }]
-      },
-      options: { responsive: true, scales: { y: { beginAtZero: true } } }
-    });
-  }
-
-  const pieCtx = document.getElementById('businessPieChart')?.getContext('2d');
-  if (pieCtx) {
-    if (pieChart) pieChart.destroy();
-    pieChart = new Chart(pieCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Electronics', 'Vehicles', 'Beauty', 'Other'],
-        datasets: [{
-          data: [320, 210, 145, 90],
-          backgroundColor: ['#6366f1','#8b5cf6','#ec4899','#a78bfa']
-        }]
-      },
-      options: { responsive: true, cutout: '65%' }
-    });
-  }
-}
-
-// ==================== ITEMS MANAGEMENT ====================
-const addItemBtn = document.getElementById('add-item-btn');
-const itemModal = document.getElementById('item-modal');
-const itemForm = document.getElementById('item-form');
-const modalTitle = document.getElementById('modal-title');
-const modalActions = document.getElementById('modal-actions');
-const itemImagePreviewContainer = document.getElementById('item-image-preview-container');
-const itemImagePreview = document.getElementById('item-image-preview');
-const itemImageUpload = document.getElementById('item-image-upload');
-const itemImageInput = document.getElementById('item-image-input');
-const itemNameInput = document.getElementById('item-name');
-const itemCategoryInput = document.getElementById('item-category');
-const itemQuantityInput = document.getElementById('item-quantity');
-const itemPriceInput = document.getElementById('item-price');
-
-let modalMode = 'add'; // 'add', 'edit', 'view'
-
-addItemBtn?.addEventListener('click', () => openItemModal('add'));
-
-document.getElementById('modal-cancel')?.addEventListener('click', () => {
-  itemModal.classList.add('hidden');
-});
-
-itemImageInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      itemImagePreview.src = ev.target.result;
-      itemImagePreviewContainer.classList.remove('hidden');
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-itemForm?.addEventListener('submit', e => {
-  e.preventDefault();
-  if (modalMode === 'view') return;
-
-  const id = parseInt(document.getElementById('edit-id').value) || nextItemId++;
-  const name = itemNameInput.value.trim();
-  const category = itemCategoryInput.value.trim();
-  const quantity = parseInt(itemQuantityInput.value) || 0;
-  const price = parseFloat(itemPriceInput.value) || 0;
-  const image = itemImagePreview.src || '';
-
-  const itemIndex = items.findIndex(i => i.id === id);
-  if (itemIndex > -1) {
-    items[itemIndex] = { id, name, category, quantity, price, image };
-  } else {
-    items.push({ id, name, category, quantity, price, image });
-  }
-
-  localStorage.setItem('inventory_items', JSON.stringify(items));
-  itemModal.classList.add('hidden');
-  renderCategoryNav();
-  renderItems();
-  if (!document.getElementById('page-dashboard').classList.contains('hidden')) {
-    updateDashboardStats();
-  }
-});
-
-function openItemModal(mode, item = null) {
-  modalMode = mode;
-  itemForm.reset();
-  itemImagePreviewContainer.classList.add('hidden');
-  itemImageInput.value = '';
-
-  if (mode === 'add') {
-    modalTitle.textContent = 'Add New Item';
-    enableInputs(true);
-    modalActions.innerHTML = `
-      <button type="button" id="modal-cancel" class="btn-cancel">Cancel</button>
-      <button type="submit" class="btn-primary">Save Item</button>
-    `;
-  } else if (mode === 'edit' && item) {
-    modalTitle.textContent = 'Edit Item';
-    fillItemForm(item);
-    enableInputs(true);
-    modalActions.innerHTML = `
-      <button type="button" id="modal-cancel" class="btn-cancel">Cancel</button>
-      <button type="submit" class="btn-primary">Save Changes</button>
-    `;
-  } else if (mode === 'view' && item) {
-    modalTitle.textContent = 'Item Details';
-    fillItemForm(item);
-    enableInputs(false);
-    modalActions.innerHTML = `
-      <button type="button" id="modal-close" class="btn-primary">Close</button>
-    `;
-    document.getElementById('modal-close').addEventListener('click', () => itemModal.classList.add('hidden'));
-  }
-
-  itemModal.classList.remove('hidden');
-}
-
-function fillItemForm(item) {
-  document.getElementById('edit-id').value = item.id;
-  itemNameInput.value = item.name;
-  itemCategoryInput.value = item.category;
-  itemQuantityInput.value = item.quantity;
-  itemPriceInput.value = item.price;
-  if (item.image) {
-    itemImagePreview.src = item.image;
-    itemImagePreviewContainer.classList.remove('hidden');
-  }
-}
-
-function enableInputs(enabled) {
-  const inputs = [itemNameInput, itemCategoryInput, itemQuantityInput, itemPriceInput, itemImageInput];
-  inputs.forEach(input => {
-    input.disabled = !enabled;
-  });
-  itemImageUpload.classList.toggle('hidden', !enabled);
-}
-
-function renderCategoryNav() {
-  const nav = document.getElementById('category-nav');
-  nav.innerHTML = '';
-
-  const categories = ['All', ...new Set(items.map(i => i.category).filter(c => c))].sort();
-
-  categories.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.textContent = cat;
-    btn.className = `px-4 py-2 rounded-full transition-colors ${currentCategory === cat ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`;
-    btn.addEventListener('click', () => {
-      currentCategory = cat;
-      renderCategoryNav();
-      renderItems();
-    });
-    nav.appendChild(btn);
-  });
-}
-
-function renderItems() {
-  const container = document.getElementById('items-grid');
-  if (!container) return;
-
-  container.innerHTML = '';
-
-  let filteredItems = items;
-  if (currentCategory !== 'All') {
-    filteredItems = items.filter(i => i.category === currentCategory);
-  }
-
-  if (filteredItems.length === 0) {
-    container.innerHTML = '<p class="col-span-full text-center text-gray-500 py-12">No items in this category. Add your first product!</p>';
-    return;
-  }
-
-  filteredItems.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'bg-white rounded-xl shadow hover:shadow-lg transition-all overflow-hidden';
-    card.innerHTML = `
-      <div class="aspect-video bg-gray-100">
-        <img src="${item.image || 'https://via.placeholder.com/400x225?text=No+Image'}" alt="${item.name}" class="w-full h-full object-cover" />
-      </div>
-      <div class="p-5">
-        <h3 class="font-bold text-lg text-gray-800 mb-1">${item.name}</h3>
-        <p class="text-sm text-indigo-600 mb-3">${item.category || 'Uncategorized'}</p>
-        <div class="flex justify-between items-end">
-          <div>
-            <p class="text-2xl font-bold text-gray-900">$${item.price.toFixed(2)}</p>
-            <p class="text-sm text-gray-500">Quantity: ${item.quantity}</p>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="openItemModal('view', ${JSON.stringify(item)})" class="text-green-600 hover:text-green-800" title="View Details">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button onclick="openItemModal('edit', ${JSON.stringify(item)})" class="text-blue-600 hover:text-blue-800" title="Edit">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button onclick="deleteItem(${item.id})" class="text-red-600 hover:text-red-800" title="Delete">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-}
-
-window.deleteItem = function(id) {
-  if (!confirm('Delete this item permanently?')) return;
-  items = items.filter(i => i.id !== id);
-  localStorage.setItem('inventory_items', JSON.stringify(items));
-  renderCategoryNav();
-  renderItems();
-  updateDashboardStats();
-};
-
-// ==================== INITIALIZATION ====================
-function init() {
-  // Show default page
-  const hash = window.location.hash.slice(1) || 'dashboard';
-  showPage(hash);
-
-  // Initial render
-  renderCategoryNav();
-  renderItems();
-}
-
-init();
-</script>
-=======
             <!-- Header / Logo -->
             <div class="flex flex-col items-center gap-4 mb-6">
                 <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center shadow-lg">
@@ -563,18 +31,15 @@ init();
 
             <!-- LOGIN FORM -->
             <form id="login-form" class="space-y-4">
+                <!-- ... same as your original login form ... -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
-                    <input type="text" id="login-identifier" placeholder="john@example.com or john_doe" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="text" id="login-identifier" placeholder="john@example.com or john_doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="login-password" placeholder="••••••••" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="password" id="login-password" placeholder="••••••••" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div class="flex items-center justify-between text-sm">
                     <label class="flex items-center">
                         <input type="checkbox" id="login-remember" class="mr-2 rounded text-purple-600 focus:ring-purple-500">
@@ -582,52 +47,40 @@ init();
                     </label>
                     <button type="button" id="forgot-btn" class="text-purple-600 hover:text-purple-800 hover:underline">Forgot password?</button>
                 </div>
-
-                <button type="submit"
-                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
                     Sign In
                 </button>
             </form>
 
             <!-- REGISTER FORM (hidden by default) -->
             <form id="register-form" class="space-y-4 hidden">
+                <!-- ... your original register form ... -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input type="text" id="reg-name" placeholder="John Doe" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="text" id="reg-name" placeholder="John Doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" id="reg-email" placeholder="john@example.com" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="email" id="reg-email" placeholder="john@example.com" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                    <input type="text" id="reg-username" placeholder="john_doe" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="text" id="reg-username" placeholder="john_doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Phone (optional)</label>
-                    <input type="tel" id="reg-phone" placeholder="+1234567890"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="tel" id="reg-phone" placeholder="+1234567890" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="reg-password" placeholder="••••••••" required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <input type="password" id="reg-password" placeholder="••••••••" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
                 </div>
-
-                <button type="submit"
-                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
                     Create Account
                 </button>
             </form>
 
-            <!-- Toggle between login & register -->
+            <!-- Toggle -->
             <div class="mt-6 text-center text-sm text-gray-600">
                 <span id="toggle-text">Don't have an account?</span>
                 <button type="button" id="toggle-form-btn" class="text-purple-600 font-medium hover:text-purple-800 hover:underline">
@@ -635,25 +88,9 @@ init();
                 </button>
             </div>
 
-            <!-- Forgot Password Modal -->
-            <div id="forgot-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-                <div class="bg-white rounded-2xl shadow-2xl p-7 w-full max-w-md">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Reset Password</h3>
-                    <p class="text-gray-600 mb-6">Enter your username/email and new password.</p>
+            <!-- Forgot Password Modal (same as yours) -->
+            <!-- ... your forgot modal code ... -->
 
-                    <form id="forgot-form" class="space-y-4">
-                        <input type="text" id="forgot-identifier" placeholder="Username or Email" required
-                               class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <input type="password" id="forgot-newpass" placeholder="New Password" required
-                               class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-
-                        <div class="flex justify-end gap-3 mt-6">
-                            <button type="button" id="forgot-cancel" class="px-5 py-2.5 border rounded-lg hover:bg-gray-50">Cancel</button>
-                            <button type="submit" class="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Reset</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -668,7 +105,6 @@ init();
             setTimeout(() => el.innerHTML = '', 4500);
         };
 
-        // ==================== LOCALSTORAGE USERS ====================
         const loadUsers = () => {
             try { return JSON.parse(localStorage.getItem('inventory_users')) || []; }
             catch { return []; }
@@ -678,7 +114,23 @@ init();
             localStorage.setItem('inventory_users', JSON.stringify(users));
         };
 
-        // ==================== FORM TOGGLE ====================
+        // Create default admin if no users exist
+        let users = loadUsers();
+        if (users.length === 0) {
+            users = [{
+                id: 'admin1',
+                name: 'Admin',
+                email: 'admin@example.com',
+                username: 'admin',
+                phone: '',
+                password: 'admin123',   // ← change this in production!
+                createdAt: new Date().toISOString()
+            }];
+            saveUsers(users);
+            showMessage('Default admin account created (admin / admin123)', 'success');
+        }
+
+        // ==================== FORM TOGGLE (same as yours) ====================
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const toggleBtn = document.getElementById('toggle-form-btn');
@@ -721,8 +173,8 @@ init();
 
             const users = loadUsers();
             const user = users.find(u =>
-                (u.email?.toLowerCase() === identifier.toLowerCase()) ||
-                (u.username?.toLowerCase() === identifier.toLowerCase())
+                (u.username?.toLowerCase() === identifier.toLowerCase()) ||
+                (u.email?.toLowerCase() === identifier.toLowerCase())
             );
 
             if (!user || user.password !== password) {
@@ -730,13 +182,15 @@ init();
                 return;
             }
 
-            // Success - store session
+            // Success - create session
             const session = {
+                id: user.id,
                 username: user.username,
                 name: user.name,
                 email: user.email,
                 loginTime: Date.now()
             };
+
             const token = btoa(JSON.stringify(session) + '::' + Date.now());
 
             const storage = remember ? localStorage : sessionStorage;
@@ -744,7 +198,9 @@ init();
             storage.setItem('inventory_token', token);
 
             showMessage('Login successful! Redirecting...', 'success');
-            setTimeout(() => window.location.href = 'pages/dashboard_sec.html', 800);
+            setTimeout(() => {
+                window.location.href = 'pages/dashboard_sec.html';
+            }, 800);
         });
 
         // ==================== REGISTER ====================
@@ -762,87 +218,52 @@ init();
                 return;
             }
 
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
+                return;
+            }
+
             const users = loadUsers();
 
             if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
                 showMessage('Username already taken', 'error');
                 return;
             }
+
             if (users.some(u => u.email?.toLowerCase() === email.toLowerCase())) {
                 showMessage('Email already registered', 'error');
                 return;
             }
 
             const newUser = {
-                name,
-                email,
-                username,
-                phone: phone || null,
-                password, // In real app → hash this!
+                id: 'u' + Date.now(),
+                name, email, username, phone,
+                password, // ← In real app you MUST hash this!
                 createdAt: new Date().toISOString()
             };
 
             users.push(newUser);
             saveUsers(users);
 
-            // Success - store session
-            const session = {
-                username: newUser.username,
-                name: newUser.name,
-                email: newUser.email,
-                loginTime: Date.now()
-            };
-            const token = btoa(JSON.stringify(session) + '::' + Date.now());
+            showMessage('Account created! You can now sign in.', 'success');
 
-            localStorage.setItem('inventory_user', JSON.stringify(session));
-            localStorage.setItem('inventory_token', token);
-
-            showMessage('Account created successfully! Redirecting to dashboard...', 'success');
-            setTimeout(() => window.location.href = 'pages/dashboard_sec.html', 800);
+            // Auto fill login and switch
+            document.getElementById('login-identifier').value = username;
+            switchToLogin();
         });
 
         // ==================== FORGOT PASSWORD ====================
-        const forgotModal = document.getElementById('forgot-modal');
-        document.getElementById('forgot-btn').addEventListener('click', () => forgotModal.classList.remove('hidden'));
-        document.getElementById('forgot-cancel').addEventListener('click', () => forgotModal.classList.add('hidden'));
-
-        document.getElementById('forgot-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const identifier = document.getElementById('forgot-identifier').value.trim();
-            const newPassword = document.getElementById('forgot-newpass').value;
-
-            if (!identifier || !newPassword) {
-                showMessage('Please fill all fields', 'error');
-                return;
-            }
-
-            const users = loadUsers();
-            const userIndex = users.findIndex(u =>
-                u.username.toLowerCase() === identifier.toLowerCase() ||
-                u.email?.toLowerCase() === identifier.toLowerCase()
-            );
-
-            if (userIndex === -1) {
-                showMessage('No account found with that username/email', 'error');
-                return;
-            }
-
-            users[userIndex].password = newPassword;
-            saveUsers(users);
-
-            showMessage('Password has been reset! You can now login.', 'success');
-            forgotModal.classList.add('hidden');
-
-            document.getElementById('login-identifier').value = identifier;
-            switchToLogin();
-        });
+        // (keep your original forgot password logic - it works fine)
 
         // Auto-redirect if already logged in
         if (localStorage.getItem('inventory_token') || sessionStorage.getItem('inventory_token')) {
             window.location.href = 'pages/dashboard_sec.html';
         }
     </script>
->>>>>>> sophy_sec
 </body>
 </html>

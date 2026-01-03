@@ -158,7 +158,7 @@ The system works perfectly on:
 - 🎨 Image editing/cropping
 - 📁 Image gallery/library
 - 🔍 Image search integration
-- 📊 Image-based reports
+ 
 - 🏷️ Auto-tagging from images
 
 ---

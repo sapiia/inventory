@@ -36,7 +36,13 @@
     const modal = document.getElementById('item-view-modal'); if(!modal) return;
     const content = document.getElementById('view-item-content');
     if(content){
+      const members = loadMembers();
+      const user = members.find(m => m.id === item.user);
+      const userName = user ? (user.name || user.email) : 'Unassigned';
       content.innerHTML = `
+      <div class="mb-4">
+        <img src="${item.image || 'https://via.placeholder.com/300x200/8b5cf6/ffffff?text=No+Image'}" alt="${item.name}" class="w-full h-48 object-cover rounded-lg">
+      </div>
       <div>
         <p class="text-sm text-gray-500">ID</p>
         <p class="font-semibold text-gray-800">${item.sku||item.id||'N/A'}</p>
@@ -44,6 +50,10 @@
       <div>
         <p class="text-sm text-gray-500">Name</p>
         <p class="font-semibold">${item.name||''}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Assigned User</p>
+        <p class="font-semibold text-purple-600">${userName}</p>
       </div>
       <div class="grid grid-cols-2 gap-3">
         <div>
@@ -101,9 +111,51 @@
       const name = (document.getElementById('item-name') && document.getElementById('item-name').value.trim()) || '';
       const quantity = parseInt(document.getElementById('item-quantity').value) || 0;
       const price = parseFloat(document.getElementById('item-price').value) || 0;
-      let items = loadItems(); const idx = items.findIndex(x=> (x.sku||x.id) === (sku||id)); const obj = { id, sku, name, quantity, price };
+      const image = (document.getElementById('item-image') && document.getElementById('item-image').value.trim()) || '';
+      const user = (document.getElementById('item-user') && document.getElementById('item-user').value) || '';
+      let items = loadItems(); const idx = items.findIndex(x=> (x.sku||x.id) === (sku||id)); const obj = { id, sku, name, quantity, price, image, user };
       if(idx>-1) items[idx] = Object.assign(items[idx], obj); else items.push(obj);
       saveItems(items); closeItemModal(); renderItemsPage();
+    });
+    // Order handlers
+    const orderBtn = document.getElementById('btn-order'); if(orderBtn) orderBtn.addEventListener('click', openOrderModal);
+    const orderClose = document.getElementById('order-close'); if(orderClose) orderClose.addEventListener('click', closeOrderModal);
+    const orderCancel = document.getElementById('order-cancel'); if(orderCancel) orderCancel.addEventListener('click', closeOrderModal);
+    const orderForm = document.getElementById('order-form'); if(orderForm) orderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const customerName = document.getElementById('order-customer-name').value.trim();
+      const customerEmail = document.getElementById('order-customer-email').value.trim();
+      const orderDate = document.getElementById('order-date').value;
+      const deliveryDate = document.getElementById('order-delivery-date').value;
+      const notes = document.getElementById('order-notes').value.trim();
+      const selectedItems = [];
+      const checkboxes = document.querySelectorAll('#order-items-list input[type="checkbox"]:checked');
+      checkboxes.forEach(cb => {
+        const qtyInput = document.querySelector(`input[type="number"][data-item-id="${cb.dataset.itemId}"]`);
+        const qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+        selectedItems.push({ itemId: cb.dataset.itemId, quantity: qty, price: parseFloat(cb.dataset.price) });
+      });
+      if(selectedItems.length === 0){
+        alert('Please select at least one item to order.');
+        return;
+      }
+      const order = {
+        id: 'o' + Date.now(),
+        customerName,
+        customerEmail,
+        orderDate,
+        deliveryDate,
+        notes,
+        items: selectedItems,
+        total: selectedItems.reduce((sum, item) => sum + (item.quantity * item.price), 0),
+        status: 'Pending'
+      };
+      // Save order (you can extend this to save to localStorage or send to server)
+      const orders = JSON.parse(localStorage.getItem('inventory_orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('inventory_orders', JSON.stringify(orders));
+      alert('Order placed successfully!');
+      closeOrderModal();
     });
     const picInput = document.getElementById('user-pic-input'); if(picInput) picInput.addEventListener('change',(e)=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ document.getElementById('user-pic-preview').src=r.result; document.getElementById('user-pic-preview').dataset.pending=r.result; }; r.readAsDataURL(f); });
 
@@ -122,17 +174,36 @@
           document.head.appendChild(styleEl);
         }
         styleEl.textContent = `
-          /* Stronger dark-mode overrides for common layout elements */
-          .app-dark body, .app-dark main { background-color: #071025 !important; color: #e6eef8 !important; }
-          .app-dark .bg-white, .app-dark .bg-gray-50, .app-dark .bg-gray-100, .app-dark .bg-purple-50, .app-dark .bg-blue-50 { background-color: transparent !important; color: #cbd5e1 !important; }
-          .app-dark .bg-gradient-to-b, .app-dark .bg-gradient-to-br { background: linear-gradient(180deg,#071425 0%,#071025 100%) !important; }
-          .app-dark aside { background: linear-gradient(180deg,#0b1220,#061323) !important; }
-          .app-dark .text-gray-600, .app-dark .text-gray-500, .app-dark .text-gray-700, .app-dark .text-gray-800 { color: #9fb0c8 !important; }
-          .app-dark .border, .app-dark .border-gray-100, .app-dark .border-gray-200, .app-dark .border-purple-50 { border-color: rgba(255,255,255,0.06) !important; }
-          .app-dark .shadow, .app-dark .shadow-lg, .app-dark .shadow-2xl { box-shadow: none !important; }
-          .app-dark input, .app-dark textarea, .app-dark select, .app-dark button { background-color: transparent !important; color: #e6eef8 !important; border-color: rgba(255,255,255,0.06) !important; }
-          .app-dark a { color: #c084fc !important; }
-          .app-dark .text-purple-700, .app-dark .text-blue-700 { color: #8b5cf6 !important; }
+          /* Enhanced dark-mode overrides for modern UI */
+          body, main { background-color: #0f0f23 !important; color: #e2e8f0 !important; }
+          .bg-white, .bg-gray-50, .bg-gray-100, .bg-purple-50, .bg-blue-50, .bg-green-50 { background-color: #1a1a2e !important; color: #cbd5e1 !important; border-color: #334155 !important; }
+          .bg-gradient-to-b, .bg-gradient-to-br, .bg-gradient-to-r { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important; }
+          aside { background: linear-gradient(180deg, #0f0f23 0%, #1a1a2e 100%) !important; box-shadow: 2px 0 10px rgba(0,0,0,0.3) !important; }
+          .text-gray-600, .text-gray-500, .text-gray-700, .text-gray-800, .text-purple-800, .text-blue-800 { color: #94a3b8 !important; }
+          .text-purple-600, .text-blue-600, .text-green-600 { color: #a78bfa !important; }
+          .text-pink-600 { color: #f472b6 !important; }
+          .border, .border-gray-100, .border-gray-200, .border-gray-300, .border-purple-50, .border-purple-100 { border-color: #334155 !important; }
+          .shadow, .shadow-lg, .shadow-xl, .shadow-2xl { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3) !important; }
+          input, textarea, select, button { background-color: #1e293b !important; color: #e2e8f0 !important; border-color: #475569 !important; }
+          input:focus, textarea:focus, select:focus { border-color: #a78bfa !important; box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1) !important; }
+          .hover\\:bg-gray-50:hover, .hover\\:bg-gray-100:hover { background-color: #334155 !important; }
+          .hover\\:bg-purple-700:hover { background-color: #7c3aed !important; }
+          .hover\\:bg-green-600:hover { background-color: #059669 !important; }
+          .hover\\:bg-red-50:hover { background-color: #dc2626 !important; }
+          a { color: #c084fc !important; }
+          .rounded-xl, .rounded-lg, .rounded-2xl { border-radius: 12px !important; }
+          /* Card enhancements */
+          .bg-white.p-6 { background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%) !important; }
+          /* Modal enhancements */
+          .bg-black.bg-opacity-40 { background-color: rgba(0,0,0,0.6) !important; }
+          /* Button enhancements */
+          .bg-purple-600 { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%) !important; }
+          .bg-green-500 { background: linear-gradient(135deg, #10b981 0%, #34d399 100%) !important; }
+          .bg-blue-600 { background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important; }
+          .bg-red-600 { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important; }
+          /* Text improvements */
+          h1, h2, h3, h4 { color: #f1f5f9 !important; }
+          p { color: #cbd5e1 !important; }
         `;
         document.documentElement.classList.add('app-dark');
       } else {
@@ -193,43 +264,133 @@
   function renderItemsPage(){
     const container = document.getElementById('items-cards'); if(!container) return;
     const items = loadItems(); container.innerHTML = '';
+    const members = loadMembers();
     items.forEach(it=>{
       const card = document.createElement('div');
-      card.className = 'bg-white p-5 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between';
+      card.className = 'bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between border border-gray-100';
+
+      const imageDiv = document.createElement('div');
+      imageDiv.className = 'mb-4';
+      const img = document.createElement('img');
+      img.src = it.image || 'https://via.placeholder.com/300x200/8b5cf6/ffffff?text=No+Image';
+      img.className = 'w-full h-48 object-cover rounded-lg';
+      img.alt = it.name || 'Product Image';
+      imageDiv.appendChild(img);
 
       const head = document.createElement('div');
-      const title = document.createElement('h4'); title.className='text-lg font-semibold text-gray-800'; title.textContent = it.name || '';
-      const idp = document.createElement('p'); idp.className='text-xs text-gray-500 mt-1'; idp.textContent = 'ID: ' + (it.sku || it.id || 'N/A');
+      const title = document.createElement('h4'); title.className='text-xl font-bold text-gray-800 mb-2'; title.textContent = it.name || '';
+      const idp = document.createElement('p'); idp.className='text-sm text-gray-500 mb-2'; idp.textContent = 'ID: ' + (it.sku || it.id || 'N/A');
       head.appendChild(title); head.appendChild(idp);
 
-      const body = document.createElement('div'); body.className = 'mt-3';
-      const qty = document.createElement('p'); qty.className='text-sm'; qty.innerHTML = '<strong>Quantity:</strong> ' + (it.quantity || 0);
-      const price = document.createElement('p'); price.className='text-sm mt-1'; price.innerHTML = '<strong>Price:</strong> $' + (parseFloat(it.price)||0).toFixed(2);
+      const userDiv = document.createElement('div');
+      userDiv.className = 'mb-3';
+      const user = members.find(m => m.id === it.user);
+      const userName = user ? (user.name || user.email) : 'Unassigned';
+      const userP = document.createElement('p'); userP.className='text-sm text-purple-600 font-medium'; userP.innerHTML = '<i class="fas fa-user mr-1"></i>Assigned to: ' + userName;
+      userDiv.appendChild(userP);
+
+      const body = document.createElement('div'); body.className = 'mb-4';
+      const qty = document.createElement('p'); qty.className='text-sm text-gray-600 mb-1'; qty.innerHTML = '<strong>Quantity:</strong> ' + (it.quantity || 0);
+      const price = document.createElement('p'); price.className='text-lg font-semibold text-green-600'; price.innerHTML = '<strong>Price:</strong> $' + (parseFloat(it.price)||0).toFixed(2);
       body.appendChild(qty); body.appendChild(price);
 
-      const footer = document.createElement('div'); footer.className = 'mt-4 flex items-center justify-between';
+      const footer = document.createElement('div'); footer.className = 'flex items-center justify-between';
       const left = document.createElement('div'); left.className='flex items-center gap-2';
-      const viewBtn = document.createElement('button'); viewBtn.className='px-3 py-1 border rounded text-sm bg-white'; viewBtn.title='View'; viewBtn.innerHTML='<i class="fas fa-eye"></i>';
-      const editBtn = document.createElement('button'); editBtn.className='px-3 py-1 bg-purple-600 text-white rounded text-sm'; editBtn.title='Edit'; editBtn.innerHTML='<i class="fas fa-pen"></i>';
-      const delBtn = document.createElement('button'); delBtn.className='px-3 py-1 border rounded text-sm btn-secondary'; delBtn.title='Delete'; delBtn.innerHTML='<i class="fas fa-trash text-red-600"></i>';
-      left.appendChild(viewBtn); left.appendChild(editBtn);
+      const viewBtn = document.createElement('button'); viewBtn.className='px-3 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition'; viewBtn.title='View'; viewBtn.innerHTML='<i class="fas fa-eye text-blue-600"></i>';
+      const editBtn = document.createElement('button'); editBtn.className='px-3 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700 transition'; editBtn.title='Edit'; editBtn.innerHTML='<i class="fas fa-pen"></i>';
+      const orderBtn = document.createElement('button'); orderBtn.className='px-3 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition'; orderBtn.title='Order'; orderBtn.innerHTML='<i class="fas fa-shopping-cart"></i>';
+      left.appendChild(viewBtn); left.appendChild(editBtn); left.appendChild(orderBtn);
+
+      const delBtn = document.createElement('button'); delBtn.className='px-3 py-2 border border-red-300 text-red-600 rounded-lg text-sm hover:bg-red-50 transition'; delBtn.title='Delete'; delBtn.innerHTML='<i class="fas fa-trash"></i>';
 
       footer.appendChild(left); footer.appendChild(delBtn);
 
       viewBtn.addEventListener('click', ()=> openViewItemModal(it));
       editBtn.addEventListener('click', ()=> openItemModal(it));
+      orderBtn.addEventListener('click', ()=> openOrderModalForItem(it));
       delBtn.addEventListener('click', ()=>{
         if(!confirm('Delete item "'+(it.name||it.sku||it.id)+'"?')) return;
         let list = loadItems(); list = list.filter(x=> (x.sku||x.id) !== (it.sku||it.id)); saveItems(list); renderItemsPage();
       });
 
-      card.appendChild(head); card.appendChild(body); card.appendChild(footer);
+      card.appendChild(imageDiv); card.appendChild(head); card.appendChild(userDiv); card.appendChild(body); card.appendChild(footer);
       container.appendChild(card);
     });
   }
 
-  // Item modal helpers
-  function openItemModal(item){ const modal = document.getElementById('item-modal'); if(!modal) return; try{ document.getElementById('item-form').reset(); document.getElementById('item-id').value = item? (item.sku||item.id) : ''; document.getElementById('item-name').value = item? item.name : ''; document.getElementById('item-sku').value = item? (item.sku||item.id) : ''; document.getElementById('item-quantity').value = item? (item.quantity||0) : 0; document.getElementById('item-price').value = item? (item.price||0) : 0; document.getElementById('item-modal-title').textContent = item? 'Edit Item' : 'Add Item'; }catch(e){} modal.classList.remove('hidden'); }
+  // Order functionality
+  function openOrderModal(){
+    const modal = document.getElementById('order-modal'); if(!modal) return;
+    document.getElementById('order-form').reset();
+    document.getElementById('order-date').value = new Date().toISOString().split('T')[0];
+    populateOrderItems();
+    modal.classList.remove('hidden');
+  }
+  function openOrderModalForItem(item){
+    openOrderModal();
+    // Pre-select the item
+    const checkboxes = document.querySelectorAll('#order-items-list input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+      if(cb.dataset.itemId === (item.sku || item.id)){
+        cb.checked = true;
+        updateOrderTotal();
+      }
+    });
+  }
+  function populateOrderItems(){
+    const container = document.getElementById('order-items-list'); if(!container) return;
+    const items = loadItems();
+    container.innerHTML = '';
+    if(items.length === 0){
+      container.innerHTML = '<p class="text-gray-500 text-center py-4">No items available</p>';
+      return;
+    }
+    items.forEach(it => {
+      const div = document.createElement('div');
+      div.className = 'flex items-center justify-between p-3 border border-gray-200 rounded-lg';
+      const left = document.createElement('div');
+      left.className = 'flex items-center gap-3';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.dataset.itemId = it.sku || it.id;
+      checkbox.dataset.price = it.price || 0;
+      checkbox.addEventListener('change', updateOrderTotal);
+      const img = document.createElement('img');
+      img.src = it.image || 'https://via.placeholder.com/50x50/8b5cf6/ffffff?text=No+Img';
+      img.className = 'w-12 h-12 object-cover rounded';
+      img.alt = it.name;
+      const info = document.createElement('div');
+      const nameP = document.createElement('p'); nameP.className='font-medium text-gray-800'; nameP.textContent = it.name;
+      const priceP = document.createElement('p'); priceP.className='text-sm text-gray-500'; priceP.textContent = '$' + (parseFloat(it.price)||0).toFixed(2);
+      info.appendChild(nameP); info.appendChild(priceP);
+      left.appendChild(checkbox); left.appendChild(img); left.appendChild(info);
+      const qtyInput = document.createElement('input');
+      qtyInput.type = 'number';
+      qtyInput.min = '1';
+      qtyInput.value = '1';
+      qtyInput.className = 'w-20 px-2 py-1 border border-gray-300 rounded text-center';
+      qtyInput.dataset.itemId = it.sku || it.id;
+      qtyInput.addEventListener('input', updateOrderTotal);
+      div.appendChild(left); div.appendChild(qtyInput);
+      container.appendChild(div);
+    });
+  }
+  function updateOrderTotal(){
+    let total = 0;
+    const checkboxes = document.querySelectorAll('#order-items-list input[type="checkbox"]:checked');
+    checkboxes.forEach(cb => {
+      const qtyInput = document.querySelector(`input[type="number"][data-item-id="${cb.dataset.itemId}"]`);
+      const qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+      const price = parseFloat(cb.dataset.price) || 0;
+      total += qty * price;
+    });
+    const totalEl = document.getElementById('order-total');
+    if(totalEl) totalEl.textContent = '$' + total.toFixed(2);
+  }
+  function closeOrderModal(){
+    const modal = document.getElementById('order-modal'); if(modal) modal.classList.add('hidden');
+  }
+  function openItemModal(item){ const modal = document.getElementById('item-modal'); if(!modal) return; try{ document.getElementById('item-form').reset(); document.getElementById('item-id').value = item? (item.sku||item.id) : ''; document.getElementById('item-name').value = item? item.name : ''; document.getElementById('item-sku').value = item? (item.sku||item.id) : ''; document.getElementById('item-quantity').value = item? (item.quantity||0) : 0; document.getElementById('item-price').value = item? (item.price||0) : 0; document.getElementById('item-image').value = item? (item.image||'') : ''; document.getElementById('item-user').value = item? (item.user||'') : ''; populateUserSelect(); document.getElementById('item-modal-title').textContent = item? 'Edit Item' : 'Add Item'; }catch(e){} modal.classList.remove('hidden'); }
   function closeItemModal(){ const modal = document.getElementById('item-modal'); if(!modal) return; modal.classList.add('hidden'); }
 
   // expose helpers for quick use

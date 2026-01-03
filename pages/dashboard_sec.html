@@ -119,6 +119,13 @@
 
 <body>
 
+  <script>
+    // Check authentication on page load
+    if (!localStorage.getItem('inventory_token') && !sessionStorage.getItem('inventory_token')) {
+      window.location.href = 'login.html';
+    }
+  </script>
+
   <body class="bg-gray-100 font-sans">
 
     <div class="flex h-screen overflow-hidden">
@@ -1754,7 +1761,7 @@
         const s = loadSettings();
         if (s.requireAuth && window.auth && auth.isAuthenticated && !auth.isAuthenticated()) {
           // redirect to login when auth required
-          window.location.href = 'pages/login.html';
+          window.location.href = 'login.html';
           return;
         }
         originalShowPage(page);
@@ -1780,17 +1787,17 @@
 
       // Profile functions
       function updateProfileDisplay() {
-        const p = loadProfile();
-        document.getElementById('profile-pic').src = p.picture || '../assets/images/default-avatar.png';
-        document.getElementById('profile-name').textContent = p.name || 'User';
+        const user = JSON.parse(localStorage.getItem('inventory_user') || sessionStorage.getItem('inventory_user') || '{}');
+        document.getElementById('profile-pic').src = '../assets/images/default-avatar.png'; // Default for now
+        document.getElementById('profile-name').textContent = user.name || 'User';
       }
 
       document.getElementById('profile-section').addEventListener('click', openProfileModal);
 
       function openProfileModal() {
-        const p = loadProfile();
-        document.getElementById('profile-name-input').value = p.name || '';
-        document.getElementById('profile-password-input').value = p.password || '';
+        const user = JSON.parse(localStorage.getItem('inventory_user') || sessionStorage.getItem('inventory_user') || '{}');
+        document.getElementById('profile-name-input').value = user.name || '';
+        document.getElementById('profile-password-input').value = '';
         document.getElementById('profile-pic-preview').src = p.picture || '../assets/images/default-avatar.png';
         document.getElementById('profile-modal').classList.remove('hidden');
       }
@@ -1812,9 +1819,11 @@
         e.preventDefault();
         const name = document.getElementById('profile-name-input').value.trim();
         const password = document.getElementById('profile-password-input').value;
-        const picSrc = document.getElementById('profile-pic-preview').src;
-        const p = { name, picture: picSrc, password };
-        saveProfile(p);
+        // Update the session user
+        const user = JSON.parse(localStorage.getItem('inventory_user') || sessionStorage.getItem('inventory_user') || '{}');
+        user.name = name;
+        const storage = localStorage.getItem('inventory_user') ? localStorage : sessionStorage;
+        storage.setItem('inventory_user', JSON.stringify(user));
         updateProfileDisplay();
         document.getElementById('profile-modal').classList.add('hidden');
         showNotification('Profile updated successfully!', 'success');
@@ -1822,7 +1831,7 @@
 
       document.getElementById('profile-logout').addEventListener('click', () => {
         if (confirm('Are you sure you want to logout?')) {
-          window.location.href = 'pages/login.html';
+          window.location.href = 'login.html';
         }
       });
     </script>

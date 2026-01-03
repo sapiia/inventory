@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory System - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-blue-50 min-h-screen flex items-center justify-center p-6">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 ring-1 ring-purple-100">
+
+            <!-- Header / Logo -->
+            <div class="flex flex-col items-center gap-4 mb-6">
+                <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center shadow-lg">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12h7v9H3z" fill="rgba(255,255,255,0.9)"/>
+                        <path d="M14 3h7v18h-7z" fill="rgba(255,255,255,0.9)" opacity="0.9"/>
+                        <path d="M10 7l4 3-4 3V7z" fill="rgba(255,255,255,0.95)"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h1 class="text-3xl font-extrabold text-purple-800">Inventory System</h1>
+                    <p class="text-gray-500 mt-1" id="form-title">Sign in to continue</p>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div id="messages" class="mb-5 min-h-[2.5rem]"></div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" class="space-y-4">
+                <!-- ... same as your original login form ... -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
+                    <input type="text" id="login-identifier" placeholder="john@example.com or john_doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="login-remember" class="mr-2 rounded text-purple-600 focus:ring-purple-500">
+                        Remember me
+                    </label>
+                    <button type="button" id="forgot-btn" class="text-purple-600 hover:text-purple-800 hover:underline">Forgot password?</button>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- REGISTER FORM (hidden by default) -->
+            <form id="register-form" class="space-y-4 hidden">
+                <!-- ... your original register form ... -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="reg-name" placeholder="John Doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="reg-email" placeholder="john@example.com" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="reg-username" placeholder="john_doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone (optional)</label>
+                    <input type="tel" id="reg-phone" placeholder="+1234567890" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="reg-password" placeholder="••••••••" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3.5 rounded-lg shadow-lg transition duration-200">
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Toggle -->
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <span id="toggle-text">Don't have an account?</span>
+                <button type="button" id="toggle-form-btn" class="text-purple-600 font-medium hover:text-purple-800 hover:underline">
+                    Sign up
+                </button>
+            </div>
+
+            <!-- Forgot Password Modal (same as yours) -->
+            <div id="forgot-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
+                    <h3 class="text-xl font-bold mb-4">Reset Password</h3>
+                    <form id="forgot-form">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
+                            <input type="text" id="forgot-identifier" placeholder="john@example.com or john_doe" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                            <input type="password" id="forgot-newpass" placeholder="••••••••" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                        </div>
+                        <div class="flex justify-end gap-3">
+                            <button type="button" id="forgot-cancel" class="px-4 py-2 border rounded-lg">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg">Reset Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ==================== UTILITIES ====================
+        const showMessage = (text, type = 'info') => {
+            const el = document.getElementById('messages');
+            const bg = type === 'error' ? 'bg-red-100 text-red-700' :
+                       type === 'success' ? 'bg-green-100 text-green-700' :
+                       'bg-blue-50 text-blue-700';
+            el.innerHTML = `<div class="p-3 rounded-lg text-sm ${bg}">${text}</div>`;
+            setTimeout(() => el.innerHTML = '', 4500);
+        };
+
+        const loadUsers = () => {
+            try { return JSON.parse(localStorage.getItem('inventory_users')) || []; }
+            catch { return []; }
+        };
+
+        const saveUsers = (users) => {
+            localStorage.setItem('inventory_users', JSON.stringify(users));
+        };
+
+        // Create default admin if no users exist
+        let users = loadUsers();
+        if (users.length === 0) {
+            users = [{
+                id: 'admin1',
+                name: 'Admin',
+                email: 'admin@example.com',
+                username: 'admin',
+                phone: '',
+                password: 'admin123',   // ← change this in production!
+                createdAt: new Date().toISOString()
+            }];
+            saveUsers(users);
+            showMessage('Default admin account created (admin / admin123)', 'success');
+        }
+
+        // ==================== FORM TOGGLE ====================
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const toggleBtn = document.getElementById('toggle-form-btn');
+        const toggleText = document.getElementById('toggle-text');
+        const formTitle = document.getElementById('form-title');
+
+        const switchToRegister = () => {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            toggleText.textContent = "Already have an account?";
+            toggleBtn.textContent = "Sign in";
+            formTitle.textContent = "Create your account";
+        };
+
+        const switchToLogin = () => {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            toggleText.textContent = "Don't have an account?";
+            toggleBtn.textContent = "Sign up";
+            formTitle.textContent = "Sign in to continue";
+        };
+
+        toggleBtn.addEventListener('click', () => {
+            if (loginForm.classList.contains('hidden')) switchToLogin();
+            else switchToRegister();
+        });
+
+        // ==================== LOGIN ====================
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const identifier = document.getElementById('login-identifier').value.trim();
+            const password = document.getElementById('login-password').value;
+            const remember = document.getElementById('login-remember').checked;
+
+            console.log('Login attempt:', identifier, password ? '***' : '');
+
+            if (!identifier || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            const users = loadUsers();
+            console.log('Loaded users:', users.length);
+
+            const user = users.find(u =>
+                (u.username?.toLowerCase() === identifier.toLowerCase()) ||
+                (u.email?.toLowerCase() === identifier.toLowerCase())
+            );
+
+            console.log('Found user:', user ? user.username : 'none');
+
+            if (!user || user.password !== password) {
+                showMessage('Invalid username/email or password', 'error');
+                return;
+            }
+
+            // Success - create session
+            const session = {
+                id: user.id,
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                loginTime: Date.now()
+            };
+
+            const token = btoa(JSON.stringify(session) + '::' + Date.now());
+
+            const storage = remember ? localStorage : sessionStorage;
+            storage.setItem('inventory_user', JSON.stringify(session));
+            storage.setItem('inventory_token', token);
+
+            showMessage('Login successful! Redirecting...', 'success');
+            setTimeout(() => {
+                window.location.href = 'dashboard_sec.html';
+            }, 800);
+        });
+
+        // ==================== REGISTER ====================
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const username = document.getElementById('reg-username').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const password = document.getElementById('reg-password').value;
+
+            console.log('Register attempt:', name, email, username);
+
+            if (!name || !email || !username || !password) {
+                showMessage('Please fill all required fields', 'error');
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            const users = loadUsers();
+
+            if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+                showMessage('Username already taken', 'error');
+                return;
+            }
+
+            if (users.some(u => u.email?.toLowerCase() === email.toLowerCase())) {
+                showMessage('Email already registered', 'error');
+                return;
+            }
+
+            const newUser = {
+                id: 'u' + Date.now(),
+                name, email, username, phone,
+                password, // ← In real app you MUST hash this!
+                createdAt: new Date().toISOString()
+            };
+
+            users.push(newUser);
+            saveUsers(users);
+
+            console.log('User registered:', newUser.username);
+
+            showMessage('Account created! You can now sign in.', 'success');
+
+            // Auto fill login and switch
+            document.getElementById('login-identifier').value = username;
+            switchToLogin();
+        });
+
+        // ==================== FORGOT PASSWORD ====================
+        const forgotModal = document.getElementById('forgot-modal');
+        document.getElementById('forgot-btn').addEventListener('click', () => forgotModal.classList.remove('hidden'));
+        document.getElementById('forgot-cancel').addEventListener('click', () => forgotModal.classList.add('hidden'));
+
+        document.getElementById('forgot-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const identifier = document.getElementById('forgot-identifier').value.trim();
+            const newPassword = document.getElementById('forgot-newpass').value;
+
+            if (!identifier || !newPassword) {
+                showMessage('Please fill all fields', 'error');
+                return;
+            }
+
+            const users = loadUsers();
+            const userIndex = users.findIndex(u =>
+                u.username.toLowerCase() === identifier.toLowerCase() ||
+                u.email?.toLowerCase() === identifier.toLowerCase()
+            );
+
+            if (userIndex === -1) {
+                showMessage('No account found with that username/email', 'error');
+                return;
+            }
+
+            users[userIndex].password = newPassword;
+            saveUsers(users);
+
+            showMessage('Password has been reset! You can now login.', 'success');
+            forgotModal.classList.add('hidden');
+
+            document.getElementById('login-identifier').value = identifier;
+            switchToLogin();
+        });
+
+        // ==================== AUTO-REDIRECT ====================
+        if (localStorage.getItem('inventory_token') || sessionStorage.getItem('inventory_token')) {
+            window.location.href = 'dashboard_sec.html';
+        }
+    </script>
+</body>
+</html>

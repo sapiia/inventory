@@ -9,8 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/items.css">
-  <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="../assets/css/items.css">
   <script src="../assets/js/app.js"></script>
   <style>
     .sidebar-active {
@@ -121,9 +120,9 @@
 
   <script>
     // Check authentication on page load
-    if (!localStorage.getItem('inventory_token') && !sessionStorage.getItem('inventory_token')) {
-      window.location.href = 'login.html';
-    }
+    // if (!localStorage.getItem('inventory_token') && !sessionStorage.getItem('inventory_token')) {
+    //   window.location.href = 'login.html';
+    // }
   </script>
 
   <body class="bg-gray-100 font-sans">
@@ -553,6 +552,7 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-2xl overflow-hidden p-6">
+          <div id="type-nav" class="flex flex-wrap gap-2 mb-6"></div>
           <div id="items-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             <!-- item cards injected by app.js -->
           </div>
@@ -582,9 +582,28 @@
                 <input id="item-quantity" type="number" min="0" value="0" class="w-full px-4 py-3 border border-gray-200 rounded-lg input-field" />
               </div>
             </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                <input id="item-type" type="text" class="w-full px-4 py-3 border border-gray-200 rounded-lg input-field" placeholder="e.g. Electronics" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <input id="item-category" type="text" class="w-full px-4 py-3 border border-gray-200 rounded-lg input-field" placeholder="e.g. Phones" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+              <input id="item-model" type="text" class="w-full px-4 py-3 border border-gray-200 rounded-lg input-field" placeholder="e.g. iPhone 14 Pro" />
+            </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
               <input id="item-price" type="number" min="0" step="0.01" value="0" class="w-full px-4 py-3 border border-gray-200 rounded-lg input-field" placeholder="0.00" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+              <input id="item-image" type="file" accept="image/*" class="w-full px-4 py-3 border border-gray-200 rounded-lg input-field" />
+              <img id="item-image-preview" src="" alt="Preview" class="mt-2 max-w-full h-32 object-cover rounded-lg hidden" />
             </div>
             <div class="flex justify-end gap-3 pt-2">
               <button type="button" id="item-cancel-2" class="px-4 py-2 border rounded-lg btn-secondary">Cancel</button>
@@ -1024,73 +1043,87 @@
         document.getElementById('processing-orders').textContent = orders.filter(o => o.status === 'Processing').length;
       }
 
-      // CRUD for Items
-      document.getElementById('add-item-btn').addEventListener('click', openAddModal);
+      // Items page
+      function renderItemsPage() {
+        renderItemsGrid();
+      }
+      document.getElementById('btn-add-item').addEventListener('click', openAddModal);
       function openAddModal() {
         document.getElementById('modal-title').textContent = 'Add New Item';
         document.getElementById('item-form').reset();
-        document.getElementById('edit-id').value = '';
-        document.getElementById('image-preview').style.display = 'none';
+        document.getElementById('item-id').value = '';
+        document.getElementById('item-image-preview').style.display = 'none';
         document.getElementById('item-modal').classList.remove('hidden');
       }
 
-      document.getElementById('cancel-btn').addEventListener('click', () => {
+      document.getElementById('item-cancel').addEventListener('click', () => {
         document.getElementById('item-modal').classList.add('hidden');
+        document.getElementById('item-form').reset();
+        document.getElementById('item-id').value = '';
+        document.getElementById('item-image-preview').style.display = 'none';
+      });
+
+      document.getElementById('item-cancel-2').addEventListener('click', () => {
+        document.getElementById('item-modal').classList.add('hidden');
+        document.getElementById('item-form').reset();
+        document.getElementById('item-id').value = '';
+        document.getElementById('item-image-preview').style.display = 'none';
       });
 
       // Image preview
-      document.getElementById('image').addEventListener('change', function (e) {
+      document.getElementById('item-image').addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
           reader.onload = function (event) {
-            document.getElementById('image-preview').src = event.target.result;
-            document.getElementById('image-preview').style.display = 'block';
+            document.getElementById('item-image-preview').src = event.target.result;
+            document.getElementById('item-image-preview').style.display = 'block';
           };
           reader.readAsDataURL(file);
         } else {
-          document.getElementById('image-preview').style.display = 'none';
+          document.getElementById('item-image-preview').style.display = 'none';
         }
       });
 
       document.getElementById('item-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        const id = document.getElementById('edit-id').value || nextId++;
-        const name = document.getElementById('name').value.trim();
-        const type = document.getElementById('type').value.trim();
-        const category = document.getElementById('category').value.trim();
-        const quantity = parseInt(document.getElementById('quantity').value);
-        const price = parseFloat(document.getElementById('price').value);
-        const model = document.getElementById('model').value.trim();
+        const id = document.getElementById('item-id').value || nextId++;
+        const name = document.getElementById('item-name').value.trim();
+        const sku = document.getElementById('item-sku').value.trim();
+        const type = document.getElementById('item-type').value.trim();
+        const category = document.getElementById('item-category').value.trim();
+        const quantity = parseInt(document.getElementById('item-quantity').value);
+        const price = parseFloat(document.getElementById('item-price').value);
+        const model = document.getElementById('item-model').value.trim();
 
-        if (!name || !category || isNaN(quantity) || isNaN(price) || quantity < 0 || price < 0) {
+        if (!name || isNaN(quantity) || isNaN(price) || quantity < 0 || price < 0) {
           alert('Please fill all required fields with valid values');
           return;
         }
 
         // Handle image
-        const imageInput = document.getElementById('image');
+        const imageInput = document.getElementById('item-image');
         if (imageInput.files && imageInput.files[0]) {
           const reader = new FileReader();
           reader.onload = function (event) {
             const image = event.target.result;
-            saveItem(id, name, type, category, quantity, price, model, image);
+            saveItem(id, name, sku, quantity, type, category, model, price, image);
           };
           reader.readAsDataURL(imageInput.files[0]);
         } else {
           // Use existing image or default
           const existingItem = items.find(i => i.id == id);
           const image = existingItem ? existingItem.image : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMDAgODBMMTE1IDk1SDEzMEwxNDUgODBIMTMwTDEwMCAxMTBMMzAgODBIMTUgTDMwIDk1SDQ1TDEwMCA4MFoiIGZpbGw9IiM3QzNBRUQiLz4KPHN2Zy8+';
-          saveItem(id, name, type, category, quantity, price, model, image);
+          saveItem(id, name, sku, quantity, type, category, model, price, image);
         }
       });
 
-      function saveItem(id, name, type, category, quantity, price, model, image) {
+      function saveItem(id, name, sku, quantity, type, category, model, price, image) {
         const existingIndex = items.findIndex(i => i.id === parseInt(id));
         if (existingIndex > -1) {
-          items[existingIndex] = { id: parseInt(id), name, type, category, quantity, price, model, image };
+          items[existingIndex] = { id: parseInt(id), name, sku, quantity, type, category, model, price, image };
         } else {
-          items.push({ id, name, type, category, quantity, price, model, image });
+          items.push({ id, name, sku, quantity, type, category, model, price, image });
         }
         saveData();
         document.getElementById('item-modal').classList.add('hidden');
@@ -1101,17 +1134,22 @@
       function editItem(id) {
         const item = items.find(i => i.id === id);
         if (!item) return;
-        document.getElementById('modal-title').textContent = 'Edit Item';
-        document.getElementById('edit-id').value = item.id;
-        document.getElementById('name').value = item.name;
-        document.getElementById('type').value = item.type;
-        document.getElementById('category').value = item.category;
-        document.getElementById('quantity').value = item.quantity;
-        document.getElementById('price').value = item.price;
-        document.getElementById('model').value = item.model;
-        const imagePreview = document.getElementById('image-preview');
-        imagePreview.src = item.image;
-        imagePreview.style.display = 'block';
+        document.getElementById('item-modal-title').textContent = 'Edit Item';
+        document.getElementById('item-id').value = item.id;
+        document.getElementById('item-name').value = item.name;
+        document.getElementById('item-sku').value = item.sku || '';
+        document.getElementById('item-type').value = item.type || '';
+        document.getElementById('item-category').value = item.category || '';
+        document.getElementById('item-quantity').value = item.quantity;
+        document.getElementById('item-price').value = item.price;
+        document.getElementById('item-model').value = item.model || '';
+        const imagePreview = document.getElementById('item-image-preview');
+        if (item.image) {
+          imagePreview.src = item.image;
+          imagePreview.style.display = 'block';
+        } else {
+          imagePreview.style.display = 'none';
+        }
         document.getElementById('item-modal').classList.remove('hidden');
       }
 
@@ -1143,7 +1181,7 @@
 
       function renderItemsGrid() {
         renderTypeNav();
-        const grid = document.getElementById('items-grid');
+        const grid = document.getElementById('items-cards');
         grid.innerHTML = '';
         const filtered = currentType === 'All' ? items : items.filter(i => i.type === currentType);
         if (filtered.length === 0) {
@@ -1160,10 +1198,10 @@
             <div class="h-48 bg-gray-100 relative overflow-hidden">
               <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
               <div class="absolute top-3 right-3 flex space-x-2">
-                <button onclick="editItem(${item.id})" class="p-2 bg-white/90 backdrop-blur-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-lg">
+                <button class="edit-btn p-2 bg-white/90 backdrop-blur-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-lg z-10">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button onclick="deleteItem(${item.id})" class="p-2 bg-white/90 backdrop-blur-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-lg">
+                <button class="delete-btn p-2 bg-white/90 backdrop-blur-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-lg z-10">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
@@ -1178,6 +1216,14 @@
               </div>
             </div>
           `;
+          card.querySelector('.edit-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            editItem(item.id);
+          });
+          card.querySelector('.delete-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteItem(item.id);
+          });
           grid.appendChild(card);
         });
       }
@@ -1831,6 +1877,10 @@
 
       document.getElementById('profile-logout').addEventListener('click', () => {
         if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('inventory_token');
+          localStorage.removeItem('inventory_user');
+          sessionStorage.removeItem('inventory_token');
+          sessionStorage.removeItem('inventory_user');
           window.location.href = 'login.html';
         }
       });

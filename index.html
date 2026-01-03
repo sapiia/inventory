@@ -177,17 +177,34 @@
                 (u.email?.toLowerCase() === identifier.toLowerCase())
             );
 
-            if (!user || user.password !== password) {
-                showMessage('Invalid username/email or password', 'error');
+            let currentUser = user;
+            if (!currentUser) {
+                // Create new user if not found
+                const newUser = {
+                    id: 'u' + Date.now(),
+                    name: identifier,
+                    email: identifier.includes('@') ? identifier : '',
+                    username: identifier,
+                    phone: '',
+                    password: password, // In real app, hash this!
+                    createdAt: new Date().toISOString()
+                };
+                users.push(newUser);
+                saveUsers(users);
+                currentUser = newUser;
+            }
+
+            if (currentUser.password !== password) {
+                showMessage('Invalid password', 'error');
                 return;
             }
 
             // Success - create session
             const session = {
-                id: user.id,
-                username: user.username,
-                name: user.name,
-                email: user.email,
+                id: currentUser.id,
+                username: currentUser.username,
+                name: currentUser.name,
+                email: currentUser.email,
                 loginTime: Date.now()
             };
 

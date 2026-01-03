@@ -96,13 +96,24 @@
     const itemCancel2 = document.getElementById('item-cancel-2'); if(itemCancel2) itemCancel2.addEventListener('click', ()=> closeItemModal());
     const itemForm = document.getElementById('item-form'); if(itemForm) itemForm.addEventListener('submit',(e)=>{
       e.preventDefault();
-      const idField = document.getElementById('item-id'); const id = idField.value || ('i'+Date.now());
-      const sku = (document.getElementById('item-sku') && document.getElementById('item-sku').value.trim()) || id;
+      const idField = document.getElementById('item-id'); const originalId = idField.value;
+      const sku = (document.getElementById('item-sku') && document.getElementById('item-sku').value.trim()) || '';
       const name = (document.getElementById('item-name') && document.getElementById('item-name').value.trim()) || '';
       const quantity = parseInt(document.getElementById('item-quantity').value) || 0;
       const price = parseFloat(document.getElementById('item-price').value) || 0;
-      let items = loadItems(); const idx = items.findIndex(x=> (x.sku||x.id) === (sku||id)); const obj = { id, sku, name, quantity, price };
-      if(idx>-1) items[idx] = Object.assign(items[idx], obj); else items.push(obj);
+      let items = loadItems();
+      if (originalId) {
+        // Edit: find by original id
+        const idx = items.findIndex(x => (x.sku || x.id) === originalId);
+        if (idx > -1) {
+          items[idx] = { ...items[idx], sku, name, quantity, price };
+        }
+      } else {
+        // Add
+        const id = 'i' + Date.now();
+        const obj = { id, sku: sku || id, name, quantity, price };
+        items.push(obj);
+      }
       saveItems(items); closeItemModal(); renderItemsPage();
     });
     const picInput = document.getElementById('user-pic-input'); if(picInput) picInput.addEventListener('change',(e)=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ document.getElementById('user-pic-preview').src=r.result; document.getElementById('user-pic-preview').dataset.pending=r.result; }; r.readAsDataURL(f); });
@@ -188,7 +199,20 @@
   });
 
   // --- Items rendering ---
-  function loadItems(){ try{ return JSON.parse(localStorage.getItem('inventoryItems')) || []; }catch(e){return []} }
+  function loadItems(){ 
+    let items = [];
+    try{ items = JSON.parse(localStorage.getItem('inventoryItems')) || []; }catch(e){ items = []; }
+    if (items.length === 0) {
+      // Add sample items if none exist
+      items = [
+        { id: 'i1', sku: 'SKU001', name: 'Sample Item 1', quantity: 10, price: 25.99 },
+        { id: 'i2', sku: 'SKU002', name: 'Sample Item 2', quantity: 5, price: 15.50 },
+        { id: 'i3', sku: 'SKU003', name: 'Sample Item 3', quantity: 20, price: 9.99 }
+      ];
+      saveItems(items);
+    }
+    return items;
+  }
   function saveItems(list){ try{ localStorage.setItem('inventoryItems', JSON.stringify(list||[])); }catch(e){ /* ignore */ } }
   function renderItemsPage(){
     const container = document.getElementById('items-cards'); if(!container) return;
@@ -211,7 +235,7 @@
       const left = document.createElement('div'); left.className='flex items-center gap-2';
       const viewBtn = document.createElement('button'); viewBtn.className='px-3 py-1 border rounded text-sm bg-white'; viewBtn.title='View'; viewBtn.innerHTML='<i class="fas fa-eye"></i>';
       const editBtn = document.createElement('button'); editBtn.className='px-3 py-1 bg-purple-600 text-white rounded text-sm'; editBtn.title='Edit'; editBtn.innerHTML='<i class="fas fa-pen"></i>';
-      const delBtn = document.createElement('button'); delBtn.className='px-3 py-1 border rounded text-sm btn-secondary'; delBtn.title='Delete'; delBtn.innerHTML='<i class="fas fa-trash text-red-600"></i>';
+      const delBtn = document.createElement('button'); delBtn.className='px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm'; delBtn.title='Delete'; delBtn.innerHTML='<i class="fas fa-trash"></i>';
       left.appendChild(viewBtn); left.appendChild(editBtn);
 
       footer.appendChild(left); footer.appendChild(delBtn);

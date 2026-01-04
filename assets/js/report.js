@@ -150,7 +150,6 @@ function initCharts() {
 // Handle report type change
 function handleReportChange(e) {
     const reportType = e.target.value;
-    console.log('Report type changed to:', reportType);
     // You can add logic here to filter or change the report
 }
 

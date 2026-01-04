@@ -184,22 +184,17 @@
             const password = document.getElementById('login-password').value;
             const remember = document.getElementById('login-remember').checked;
 
-            console.log('Login attempt:', identifier, password ? '***' : '');
-
             if (!identifier || !password) {
                 showMessage('Please fill in all fields', 'error');
                 return;
             }
 
             const users = loadUsers();
-            console.log('Loaded users:', users.length);
 
             const user = users.find(u =>
                 (u.username?.toLowerCase() === identifier.toLowerCase()) ||
                 (u.email?.toLowerCase() === identifier.toLowerCase())
             );
-
-            console.log('Found user:', user ? user.username : 'none');
 
             let currentUser = user;
             if (!currentUser) {
@@ -216,7 +211,6 @@
                 users.push(newUser);
                 saveUsers(users);
                 currentUser = newUser;
-                console.log('Created new user:', newUser.username);
             }
 
             if (currentUser.password !== password) {
@@ -255,8 +249,6 @@
             const phone = document.getElementById('reg-phone').value.trim();
             const password = document.getElementById('reg-password').value;
 
-            console.log('Register attempt:', name, email, username);
-
             if (!name || !email || !username || !password) {
                 showMessage('Please fill all required fields', 'error');
                 return;
@@ -293,8 +285,6 @@
 
             users.push(newUser);
             saveUsers(users);
-
-            console.log('User registered:', newUser.username);
 
             showMessage('Account created! You can now sign in.', 'success');
 

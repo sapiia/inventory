@@ -216,7 +216,7 @@
 
             showMessage('Login successful! Redirecting...', 'success');
             setTimeout(() => {
-                window.location.href = 'pages/dashboard_sec.html';
+                window.location.href = '/dashboard_sec.html';
             }, 800);
         });
 
@@ -279,7 +279,7 @@
 
         // Auto-redirect if already logged in
         if (localStorage.getItem('inventory_token') || sessionStorage.getItem('inventory_token')) {
-            window.location.href = 'pages/dashboard_sec.html';
+            window.location.href = '/dashboard_sec.html';
         }
     </script>
 </body>
